@@ -1,0 +1,5 @@
+{
+    "name": "brackets-commander",
+    "description": "Extension for Brackets editor providing command line interface",
+    "keywords": ["brackets", "extension", "command", "console", "shell"]
+}
