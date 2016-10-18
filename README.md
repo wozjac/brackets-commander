@@ -11,6 +11,10 @@ Features
 - no external dependencies for command line plugins - it uses pure Node.js framework embedded into Brackets for running commands
 - supports multiple command lines - tabbed interface
 
+Not supported now/TODO
+----------------------
+- interactive commands - sending input back to a running command
+
 Current status
 --------------
 Pre-alpha, currently under tests on Windows system. 
