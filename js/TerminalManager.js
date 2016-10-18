@@ -107,6 +107,4 @@ define(function(require, exports) {
     exports.showTerminalPanel = showTerminalPanel;
     exports.hideTerminalPanel = hideTerminalPanel;
     exports.getTerminalInstance = getTerminalInstance;
-
-    showTerminalPanel();
 });
