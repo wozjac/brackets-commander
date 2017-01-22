@@ -60,15 +60,21 @@ define(function(require, exports) {
         var tabItemId = "bcomm-tab-" + terminal.getId();
         var tabItem = "<li id='" + tabItemId + "'";
         if (active) {
-            tabItem += " class='active'>";
+            tabItem += " class='active terminal-tab'>";
         } else {
             tabItem += ">";
         }
-        tabItem += "<a href='#' class='close bcomm-tab-icon'>&times;</a>" +
-            "<a href='#" + terminal.getId() + "' class='bcomm-tab-name'>Terminal " + terminalCounter + "</a></li>";
+        tabItem += "<a id='" + tabItemId + "-close' href='#'" +
+            "class='close bcomm-tab-icon'>" +
+            "&times;</a>";
+        tabItem += "<a id='" + tabItemId + "-select'" +
+            "href='#" + terminal.getId() +
+            "' class='bcomm-tab-name'>" +
+            "Terminal " + terminalCounter +
+            "</a></li>";
 
         $("#bcomm-append-item").before(tabItem);
-        _attachSelectTerminal($("#" + tabItemId + " .bcomm-tab-name"));
+        _attachSelectTerminal($("#" + tabItemId + "-select"));
         $("#bcomm-terminals").append(terminal.getHtml());
     }
 
@@ -76,6 +82,9 @@ define(function(require, exports) {
         $("#bcomm-tabs").on("click", "#bcomm-tab-" + terminal.getId() + " .close", function() {
             _removeTerminal(terminal);
             _setTerminalTabNames();
+            if (terminalCounter > 0) {
+                _setActiveTerminal(terminalCounter);
+            }
         });
     }
 
@@ -101,6 +110,14 @@ define(function(require, exports) {
     function _setTerminalTabNames() {
         $("#bcomm-tabs").find(".bcomm-tab-name").each(function(index) {
             $(this).text("Terminal " + (++index));
+        });
+    }
+
+    function _setActiveTerminal(terminalIndex) {
+        $("#bcomm-tabs").find(".bcomm-tab-name").each(function(index) {
+            if (++index === terminalIndex) {
+                $(this).click();
+            }
         });
     }
 

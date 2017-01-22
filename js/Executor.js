@@ -1,5 +1,5 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global $, brackets, define */
+/*global brackets, define */
 define(function(require, exports, module) {
     "use strict";
 
@@ -29,12 +29,15 @@ define(function(require, exports, module) {
     }
 
     function runCommand(command, terminal) {
-        var projectPath = ProjectManager.getProjectRoot().fullPath;
+        if (!terminal.getPath()) {
+            terminal.setPath(ProjectManager.getProjectRoot().fullPath);
+        }
 
-        execDomain.exec("runCommand", command, terminal.getId(), projectPath)
+        execDomain.exec("runCommand", command, terminal.getId(), terminal.getPath())
             .done(function(data) {
                 delete activeProcesses[data.terminalId];
                 terminal.setCommandInputEnabled(true);
+                processAfterCommand(terminal, data);
             })
             .fail(function(data) {
                 delete activeProcesses[data.terminalId];
@@ -56,6 +59,18 @@ define(function(require, exports, module) {
             .fail(function() {
                 console.warn("[BracketsCommander] Could not kill the process with ID " + processId);
             });
+    }
+
+    function processAfterCommand(terminal, commandData) {
+        if (commandData.command.toLowerCase().startsWith("cd ") &&
+            commandData.source !== "stderr") {
+            handleChangeDirectory(terminal, commandData);
+        }
+
+        function handleChangeDirectory(terminal, commandData) {
+            var tokens = commandData.command.split(" ");
+            terminal.setPath(tokens[tokens.length - 1]);
+        }
     }
 
     exports.runCommand = runCommand;

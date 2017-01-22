@@ -49,16 +49,28 @@ ul.bcomm-tabs li a {
     color: gray;
     font-weight: bold;
     text-decoration: none;
+    outline: none;
 }
 
 ul.bcomm-tabs li.active {
     background: grey;
+    outline: none;
 }
 
 ul.bcomm-tabs li.active a {
     color: white;
+    outline: none;
 }
 
 .bcomm-tab-icon {
     margin-left: 7px;
+}
+
+#bcomm-append-link {
+    padding: 0 .5em 0 .5em;
+    border: 0;
+}
+
+#bcomm-append-item {
+    padding: .25em 0;
 }

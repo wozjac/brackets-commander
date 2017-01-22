@@ -46,18 +46,19 @@ maxerr: 50, node: true */
             }]);
     }
 
-    function runCommand(command, terminalId, projectPath, cb) {
+    function runCommand(command, terminalId, path, cb) {
         var options = {
             encoding: 'utf8'
         };
 
-        if (projectPath) {
-            options.cwd = projectPath;
+        if (path) {
+            options.cwd = path;
         }
 
         var child = exec(command, options);
 
         var outputData = {
+            command: command,
             processId: child.pid,
             terminalId: terminalId
         };

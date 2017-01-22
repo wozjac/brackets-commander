@@ -3,7 +3,8 @@
 define(function(require, exports, module) {
     "use strict";
 
-    var Mustache = brackets.getModule("thirdparty/mustache/mustache");
+    var Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        ProjectManager = brackets.getModule("project/ProjectManager");
 
     var Common = require("js/Common"),
         Executor = require("js/Executor"),
@@ -14,6 +15,7 @@ define(function(require, exports, module) {
             _terminalHtml = Mustache.render(terminalInstanceHtml, {
                 "TERMINAL_ID": _id
             }),
+            _path = null,
             _$outputElement = null,
             _$commandInputElement = null,
             _$stopButton = null;
@@ -45,6 +47,14 @@ define(function(require, exports, module) {
                 _$stopButton = $("#" + this.getId() + " button");
             }
             return _$stopButton;
+        };
+
+        this.getPath = function() {
+            return _path;
+        };
+
+        this.setPath = function(path) {
+            _path = path;
         };
 
         attachEnterEvent(this);

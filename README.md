@@ -17,7 +17,7 @@ Not supported now/TODO
 
 Current status
 --------------
-Pre-alpha, currently under tests on Windows system. 
+Currently under tests on Windows system. 
 
 Installation
 ------------
@@ -28,3 +28,10 @@ For example (Windows): C:\Users\Myname\AppData\Roaming\Brackets\extensions\user\
 Contribution
 ------------
 If you want to help in any form - feel free to contact!
+
+Changelog
+------------
+##### 0.1.1-a1
+- extend hover area in + control for opening a new terminal
+- select previous after closing a tab
+- proper handling of a current directory for a command
