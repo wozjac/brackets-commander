@@ -1,18 +1,18 @@
 Brackets Commander
 ==================
 
-Brackets Commander is an extension for Brackets editor providing command line interface.
+Brackets Commander is an extension for Brackets editor providing a command line interface.
 
-![screenshot](http://www.mediafire.com/convkey/ce3e/v6gcqk27z07l7xv6g.jpg "Screenshot")
+![screenshot](https://www.mediafire.com/convkey/d040/g1cgsb7zi9kcug16g.jpg "Screenshot")
 
 
 Features
 --------
-- no external dependencies for command line plugins - it uses pure Node.js framework embedded into Brackets for running commands
-- supports multiple command lines - tabbed interface
+- supports multiple terminals - tabbed interface
 
 Not supported now/TODO
 ----------------------
+- implement pty.js or child_pty
 - interactive commands - sending input back to a running command
 
 Current status
@@ -31,6 +31,9 @@ If you want to help in any form - feel free to contact!
 
 Changelog
 ------------
+##### 0.1.1-a2
+- xterm.js (xtermjs.org) as a terminal output view
+
 ##### 0.1.1-a1
 - extend hover area in + control for opening a new terminal
 - select previous after closing a tab
