@@ -1,36 +1,28 @@
 #bcomm-tabs-wrapper {
     overflow: hidden;
     border-bottom: gray solid 1px;
+    height: 31px;
 }
 
 #bcomm-terminals {
     margin-top: 3px;
     padding: 2px;
+    height: calc(100% - 65px);
 }
 
-.bcomm-terminal-input {
-    width: calc(100% - 46px);
-    border: 0;
-    height: 28px;
+.bcomm-xterm-container {
+    height: 100%;
 }
 
-.bcomm-command-button {
-    margin: 0;
-    height: 27px;
-    vertical-align: top;
+.bcomm-stop-icon {
+    color: #bc1212;
+    padding: 0 0 0 4px;
+    float: clear;
+    vertical-align: middle;
+    visibility: hidden;
 }
-
-.bcomm-terminal-output {
-    overflow: auto;
-}
-
-.bcomm-terminal-output pre {
-    background-color: inherit !important;
-}
-
 
 /* Terminal tabs */
-
 ul.bcomm-tabs {
     list-style-type: none;
     margin: 5px 0 0 0;
@@ -63,7 +55,7 @@ ul.bcomm-tabs li.active a {
 }
 
 .bcomm-tab-icon {
-    margin-left: 7px;
+    margin-left: 4px;
 }
 
 #bcomm-append-link {

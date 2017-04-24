@@ -4,11 +4,9 @@ define(function(require, exports, module) {
     "use strict";
 
     var NodeDomain = brackets.getModule("utils/NodeDomain"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
 
-    var TerminalManager = require("js/TerminalManager"),
-        Common = require("js/Common");
+    var TerminalManager = require("js/TerminalManager");
 
     var execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/ExecDomain"));
     execDomain.on("outputData", handleDomainOutputData);
@@ -24,24 +22,24 @@ define(function(require, exports, module) {
 
         if (data.output && data.output.length > 0) {
             var terminal = TerminalManager.getTerminalInstance(data.terminalId);
-            terminal.appendToOutput("\n" + Common.formatTerminalOutput(data.output), true);
+            terminal.write(data.output);
         }
     }
 
-    function runCommand(command, terminal) {
-        if (!terminal.getPath()) {
-            terminal.setPath(ProjectManager.getProjectRoot().fullPath);
-        }
-
-        execDomain.exec("runCommand", command, terminal.getId(), terminal.getPath())
+    function runCommand(command, terminalId, path) {
+        var terminal = TerminalManager.getTerminalInstance(terminalId);
+        terminal.setLockedInput(true);
+        execDomain.exec("runCommand", command, terminalId, path)
             .done(function(data) {
                 delete activeProcesses[data.terminalId];
-                terminal.setCommandInputEnabled(true);
+                terminal.writePrompt();
+                terminal.setLockedInput(false);
+                terminal.setStopIconVisible(false);
                 processAfterCommand(terminal, data);
             })
             .fail(function(data) {
                 delete activeProcesses[data.terminalId];
-                terminal.setCommandInputEnabled(true);
+                terminal.writePrompt();
             });
     }
 
@@ -69,7 +67,7 @@ define(function(require, exports, module) {
 
         function handleChangeDirectory(terminal, commandData) {
             var tokens = commandData.command.split(" ");
-            terminal.setPath(tokens[tokens.length - 1]);
+            terminal.setFileSystemPath(tokens[tokens.length - 1]);
         }
     }
 

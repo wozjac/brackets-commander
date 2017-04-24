@@ -6,12 +6,13 @@ define(function(require, exports) {
     var CommandManager = brackets.getModule("command/CommandManager"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager");
 
-    var Terminal = require("js/Terminal"),
+    var TerminalService = require("js/TerminalService"),
         Common = require("js/Common");
 
     var terminalInstances = {},
         terminalCounter = 0,
-        terminalPanel = null;
+        terminalPanel = null,
+        terminalPanelVisible = false;
 
     initTerminalPanel();
 
@@ -20,8 +21,11 @@ define(function(require, exports) {
         terminalPanel = WorkspaceManager.createBottomPanel("brackets-commander.terminal-panel", $(panelHtml), 130);
 
         $("#bcomm-panel .close").click(function() {
-            terminalPanel.hide();
-            CommandManager.get(Common.OPEN_TERMINAL_COMMAND_ID).setChecked(false);
+            hideTerminalPanel();
+        });
+
+        $("#bcomm-panel").on("panelResizeEnd", function() {
+            _fitTerminals();
         });
 
         _attachAppendTerminal();
@@ -30,10 +34,14 @@ define(function(require, exports) {
 
     function showTerminalPanel() {
         terminalPanel.show();
+        terminalPanelVisible = true;
+        _fitTerminals();
     }
 
     function hideTerminalPanel() {
         terminalPanel.hide();
+        terminalPanelVisible = false;
+        CommandManager.get(Common.OPEN_TERMINAL_COMMAND_ID).setChecked(false);
     }
 
     function getTerminalInstance(terminalId) {
@@ -41,11 +49,15 @@ define(function(require, exports) {
     }
 
     function _createTerminal(active) {
-        var terminal = new Terminal();
+        var terminal = new TerminalService();
         terminalCounter++;
         terminalInstances[terminal.getId()] = terminal;
         _insertTerminalToPanel(terminal, active);
         _attachCloseTerminal(terminal);
+        terminal.open();
+        if (terminalPanelVisible === true) {
+            terminal.fit();
+        }
         return terminal;
     }
 
@@ -64,18 +76,32 @@ define(function(require, exports) {
         } else {
             tabItem += ">";
         }
-        tabItem += "<a id='" + tabItemId + "-close' href='#'" +
+        tabItem += "<a id='" + tabItemId + "-close'" +
+            "href='#'" +
             "class='close bcomm-tab-icon'>" +
             "&times;</a>";
         tabItem += "<a id='" + tabItemId + "-select'" +
             "href='#" + terminal.getId() +
             "' class='bcomm-tab-name'>" +
             "Terminal " + terminalCounter +
-            "</a></li>";
+            "</a>" +
+            "<a href='#'>" +
+            "<span class='bcomm-stop-icon octicon octicon-primitive-square'>" +
+            "</a></span></li>";
 
         $("#bcomm-append-item").before(tabItem);
         _attachSelectTerminal($("#" + tabItemId + "-select"));
         $("#bcomm-terminals").append(terminal.getHtml());
+    }
+
+    function _fitTerminals() {
+        var terminal;
+        for (var i in terminalInstances) {
+            terminal = terminalInstances[i];
+            if (terminal !== undefined) {
+                terminal.fit();
+            }
+        }
     }
 
     function _attachCloseTerminal(terminal) {
