@@ -22,7 +22,7 @@ define(function(require, exports, module) {
 
         if (data.output && data.output.length > 0) {
             var terminal = TerminalManager.getTerminalInstance(data.terminalId);
-            terminal.write(data.output);
+            terminal.write(data.output.replace(/\n/g, "\r\n"));
         }
     }
 

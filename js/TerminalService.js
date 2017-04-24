@@ -45,7 +45,7 @@ define(function(require, exports, module) {
     };
 
     TerminalService.prototype.write = function(data) {
-        this._xterminal.writeln(data);
+        this._xterminal.write(data);
     };
 
     TerminalService.prototype.writePrompt = function() {
