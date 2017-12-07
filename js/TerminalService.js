@@ -62,7 +62,9 @@ define(function(require, exports, module) {
 
     TerminalService.prototype.open = function() {
         var terminalContainer = document.getElementById(this.getId());
-        this._xterminal = new XTerm();
+        this._xterminal = new XTerm({
+            cursorBlink: true
+        });
         this._xterminal.open(terminalContainer);
         this._xterminal.write("> ");
         this._attachKeyPressed();
@@ -86,32 +88,40 @@ define(function(require, exports, module) {
     TerminalService.prototype._attachKeyPressed = function() {
         var that = this;
 
-        this._xterminal.on("key", function(key, ev) {
+        this._xterminal.on("keydown", function(event) {
+            if (event.ctrlKey && event.keyCode === 67) {
+                that._stopCommand();
+                return;
+            }
+        });
+
+        this._xterminal.on("key", function(key, event) {
             if (that.getLockedInput() === true) {
                 return;
             }
+
             if (that._fileSystemPath === null) {
                 that._fileSystemPath = ProjectManager.getProjectRoot().fullPath;
             }
-            var printable = (!ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey);
-            if (ev.keyCode == 13) {
-                that._xterminal.writeln("");
-                if (that._commandString.length > 0) {
-                    Executor.runCommand(that._commandString.trim(), that.getId(), that.getFileSystemPath());
-                    that.setStopIconVisible(true);
-                } else {
-                    that.writePrompt();
-                }
-                that._commandString = "";
-            } else if (ev.keyCode == 8) {
-                // Do not delete the prompt
-                if (that._xterminal.x > 2) {
-                    that._xterminal.write("\b \b");
-                    that._commandString = that._commandString.slice(0, -1);
-                }
-            } else if (printable) {
-                that._commandString += key;
-                that._xterminal.write(key);
+
+            var printable = (!event.altKey && !event.altGraphKey && !event.ctrlKey && !event.metaKey);
+
+            switch (event.keyCode) {
+                case 13:
+                    that._handleEnter();
+                    break;
+                case 8:
+                    that._handleBackspace();
+                    break;
+                case 38:
+                case 40:
+                    that._handleArrow(event.keyCode);
+                    break;
+                default:
+                    if (printable) {
+                        that._commandString += key;
+                        that._xterminal.write(key);
+                    }
             }
         });
     };
@@ -120,10 +130,58 @@ define(function(require, exports, module) {
         var that = this;
         var stop = $("#bcomm-tab-" + that.getId() + " .bcomm-stop-icon");
         stop.on("click", function() {
-            Executor.stopCommand(that.getId());
-            that.setStopIconVisible(false);
-            that.setLockedInput(false);
+            that._stopCommand();
         });
+    };
+
+    TerminalService.prototype._stopCommand = function() {
+        Executor.stopCommand(this.getId());
+        this.setStopIconVisible(false);
+        this.setLockedInput(false);
+    };
+
+    TerminalService.prototype._handleEnter = function() {
+        this._xterminal.writeln("");
+        if (this._commandString.length > 0) {
+            Executor.runCommand(this._commandString.trim(), this.getId(), this.getFileSystemPath());
+            this.setStopIconVisible(true);
+        } else {
+            this.writePrompt();
+        }
+        this._commandString = "";
+    };
+
+    TerminalService.prototype._handleBackspace = function() {
+        // Do not delete the prompt
+        if (this._xterminal.x > 2) {
+            this._xterminal.write("\b \b");
+            this._commandString = this._commandString.slice(0, -1);
+        }
+    };
+
+    TerminalService.prototype._handleArrow = function(key) {
+        var command;
+        switch (key) {
+            case 38:
+                command = Executor.getCommandFromHistory("UP");
+                break;
+            case 40:
+                command = Executor.getCommandFromHistory("DOWN");
+                break;
+        }
+
+        if (command) {
+            var cursorPosition = this._xterminal.x;
+            for (var i = 0; i < cursorPosition - 2; i++) {
+                this._xterminal.write("\b \b");
+            }
+            this._commandString = command;
+            this._xterminal.write(command);
+        }
+    };
+
+    TerminalService.prototype._handleCtrlC = function() {
+
     };
 
     module.exports = TerminalService;

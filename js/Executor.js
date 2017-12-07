@@ -12,6 +12,8 @@ define(function(require, exports, module) {
     execDomain.on("outputData", handleDomainOutputData);
 
     var activeProcesses = {};
+    var commandHistory = [];
+    var commandHistoryState = 0;
 
     function handleDomainOutputData(event, data) {
         if (data.terminalId in activeProcesses === false) {
@@ -28,6 +30,8 @@ define(function(require, exports, module) {
 
     function runCommand(command, terminalId, path) {
         var terminal = TerminalManager.getTerminalInstance(terminalId);
+        commandHistory.push(command);
+        commandHistoryState = 0;
         terminal.setLockedInput(true);
         execDomain.exec("runCommand", command, terminalId, path)
             .done(function(data) {
@@ -71,6 +75,29 @@ define(function(require, exports, module) {
         }
     }
 
+    function getCommandFromHistory(direction) {
+        if (commandHistory.length > 0) {
+            if (direction === "UP") {
+                commandHistoryState += 1;
+            } else {
+                commandHistoryState += -1;
+            }
+
+            if (commandHistoryState > commandHistory.length) {
+                commandHistoryState += -1;
+            }
+
+            if (commandHistoryState <= 0) {
+                commandHistoryState += 1;
+            }
+
+            return commandHistory[commandHistory.length - commandHistoryState];
+        } else {
+            return "";
+        }
+    }
+
+    exports.getCommandFromHistory = getCommandFromHistory;
     exports.runCommand = runCommand;
     exports.stopCommand = stopCommand;
 });

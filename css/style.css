@@ -12,6 +12,8 @@
 
 .bcomm-xterm-container {
     height: 100%;
+    -webkit-user-select: text !important;
+    user-select: text !important;
 }
 
 .bcomm-stop-icon {
@@ -22,7 +24,9 @@
     visibility: hidden;
 }
 
+
 /* Terminal tabs */
+
 ul.bcomm-tabs {
     list-style-type: none;
     margin: 5px 0 0 0;
