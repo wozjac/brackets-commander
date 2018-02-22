@@ -1,8 +1,9 @@
 {
-    "name": "jwozniczak.brackets-commander",
-    "description": "Extension for Brackets editor providing a tabbed console interface for running commands",
+    "name": "wozjac.brackets-commander",
+    "title": "Brackets Commander",
+    "description": "Brackets extension providing a tabbed console interface for running commands",
     "homepage": "https://github.com/wozjac/brackets-commander",
-    "version": "0.1.1-a3",
+    "version": "0.2.1",
     "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk/)",
     "license": "MIT",
     "engines": {
