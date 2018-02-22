@@ -1,0 +1,13 @@
+Changelog
+------------
+##### 0.2.1
+- history (up/down keys)
+- support copy from the terminal window
+
+##### 0.2.0
+- xterm.js (xtermjs.org) as a terminal output view
+
+##### 0.1.1
+- extend hover area in + control for opening a new terminal
+- select previous after closing a tab
+- proper handling of a current directory for a command

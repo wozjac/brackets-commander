@@ -4,7 +4,7 @@
     "description": "Brackets extension providing a tabbed console interface for running commands",
     "homepage": "https://github.com/wozjac/brackets-commander",
     "version": "0.2.1",
-    "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk/)",
+    "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk)",
     "license": "MIT",
     "engines": {
         "brackets": ">=0.24.0"
