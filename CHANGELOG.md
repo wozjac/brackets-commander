@@ -1,5 +1,8 @@
 Changelog
 ------------
+##### 0.2.2
+- bugfix: incorrect handling of arrows & typing over existing text
+
 ##### 0.2.1
 - history (up/down keys)
 - support copy from the terminal window
