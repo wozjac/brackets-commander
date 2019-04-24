@@ -9,6 +9,22 @@
     "engines": {
         "brackets": ">=0.24.0"
     },
-    "i18n": ["en"],
-    "keywords": ["brackets", "extension", "command", "console", "shell"]
+    "i18n": [
+        "en"
+    ],
+    "keywords": [
+        "brackets",
+        "extension",
+        "command",
+        "console",
+        "shell"
+    ],
+    "dependencies": {
+        "node-pty-prebuilt": "^0.7.6",
+        "treekill": "^1.0.0",
+        "xterm": "^3.12.2"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0"
+    }
 }
