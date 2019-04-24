@@ -1,14 +1,13 @@
-/* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50, node: true */
-(function() {
+(function () {
     "use strict";
 
-    var NODE_DOMAIN = "BracketsCommander",
+    const NODE_DOMAIN = "BracketsCommander",
         OUTPUT_DATA_EVENT = "outputData";
 
-    var exec = require("child_process").exec,
+    const exec = require("child_process").exec,
         treekill = require("treekill");
 
-    var _domainManager;
+    let _domainManager;
 
     function init(domainManager) {
         _domainManager = domainManager;
@@ -44,42 +43,42 @@
     }
 
     function runCommand(command, terminalId, path, cb) {
-        var options = {
-            encoding: 'utf8'
+        const options = {
+            encoding: "utf8"
         };
 
         if (path) {
             options.cwd = path;
         }
 
-        var child = exec(command, options);
+        const child = exec(command, options);
 
-        var outputData = {
-            command: command,
+        const outputData = {
+            command,
             processId: child.pid,
-            terminalId: terminalId
+            terminalId
         };
 
         //in case no output, sending PID to Executor
         _domainManager.emitEvent(NODE_DOMAIN, OUTPUT_DATA_EVENT, outputData);
 
-        child.stdout.on("data", function(data) {
+        child.stdout.on("data", (data) => {
             outputData.output = data;
             outputData.source = "stdout";
             _domainManager.emitEvent(NODE_DOMAIN, OUTPUT_DATA_EVENT, outputData);
         });
 
-        child.stderr.on("data", function(data) {
+        child.stderr.on("data", (data) => {
             outputData.output = data;
             outputData.source = "stderr";
             _domainManager.emitEvent(NODE_DOMAIN, OUTPUT_DATA_EVENT, outputData);
         });
 
-        child.on("exit", function() {
+        child.on("exit", () => {
             cb(null, outputData);
         });
 
-        child.on("error", function(error) {
+        child.on("error", (error) => {
             outputData.error = error;
             cb(outputData);
         });

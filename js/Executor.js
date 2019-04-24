@@ -1,19 +1,18 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global brackets, define */
-define(function(require, exports, module) {
+define((require, exports, module) => {
     "use strict";
 
-    var NodeDomain = brackets.getModule("utils/NodeDomain"),
-        ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
+    const NodeDomain = brackets.getModule("utils/NodeDomain"),
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        TerminalManager = require("js/TerminalManager");
 
-    var TerminalManager = require("js/TerminalManager");
-
-    var execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/ExecDomain"));
+    const execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/ExecDomain"));
     execDomain.on("outputData", handleDomainOutputData);
 
-    var activeProcesses = {};
-    var commandHistory = [];
-    var commandHistoryState = 0;
+    const activeProcesses = {},
+        commandHistory = [];
+
+    let commandHistoryState = 0;
 
     function handleDomainOutputData(event, data) {
         if (data.terminalId in activeProcesses === false) {
@@ -23,25 +22,26 @@ define(function(require, exports, module) {
         }
 
         if (data.output && data.output.length > 0) {
-            var terminal = TerminalManager.getTerminalInstance(data.terminalId);
+            const terminal = TerminalManager.getTerminalInstance(data.terminalId);
             terminal.write(data.output.replace(/\n/g, "\r\n"));
         }
     }
 
     function runCommand(command, terminalId, path) {
-        var terminal = TerminalManager.getTerminalInstance(terminalId);
+        const terminal = TerminalManager.getTerminalInstance(terminalId);
         commandHistory.push(command);
         commandHistoryState = 0;
         terminal.setLockedInput(true);
+
         execDomain.exec("runCommand", command, terminalId, path)
-            .done(function(data) {
+            .done((data) => {
                 delete activeProcesses[data.terminalId];
                 terminal.writePrompt();
                 terminal.setLockedInput(false);
                 terminal.setStopIconVisible(false);
                 processAfterCommand(terminal, data);
             })
-            .fail(function(data) {
+            .fail((data) => {
                 delete activeProcesses[data.terminalId];
                 terminal.writePrompt();
             });
@@ -55,11 +55,11 @@ define(function(require, exports, module) {
 
     function killProcess(processId) {
         execDomain.exec("killProcess", processId)
-            .done(function() {
+            .done(() => {
                 delete activeProcesses[processId];
             })
-            .fail(function() {
-                console.warn("[BracketsCommander] Could not kill the process with ID " + processId);
+            .fail(() => {
+                console.warn(`[BracketsCommander] Could not kill the process with ID ${processId}`);
             });
     }
 
@@ -70,7 +70,7 @@ define(function(require, exports, module) {
         }
 
         function handleChangeDirectory(terminal, commandData) {
-            var tokens = commandData.command.split(" ");
+            const tokens = commandData.command.split(" ");
             terminal.setFileSystemPath(tokens[tokens.length - 1]);
         }
     }

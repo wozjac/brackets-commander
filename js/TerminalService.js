@@ -1,12 +1,10 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global $, brackets, define, document */
-define(function (require, exports, module) {
+define((require, exports, module) => {
     "use strict";
 
-    var Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        ProjectManager = brackets.getModule("project/ProjectManager");
-
-    var Common = require("js/Common"),
+    const Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        ProjectManager = brackets.getModule("project/ProjectManager"),
+        Common = require("js/Common"),
         Executor = require("js/Executor"),
         XTerm = require("../node_modules/xterm/dist/xterm"),
         terminalInstanceHtml = require("text!../view/terminal-instance.html");
@@ -14,7 +12,7 @@ define(function (require, exports, module) {
     require("../node_modules/xterm/dist/addons/fit/fit");
 
     function TerminalService() {
-        this._id = "terminal-" + Common.generateId();
+        this._id = `terminal-${Common.generateId()}`;
         this._terminalHtml = Mustache.render(terminalInstanceHtml, {
             "TERMINAL_ID": this._id
         });
@@ -61,7 +59,7 @@ define(function (require, exports, module) {
     };
 
     TerminalService.prototype.open = function () {
-        var terminalContainer = document.getElementById(this.getId());
+        const terminalContainer = document.getElementById(this.getId());
         this._xterminal = new XTerm({
             cursorBlink: true
         });
@@ -81,21 +79,21 @@ define(function (require, exports, module) {
     };
 
     TerminalService.prototype.setStopIconVisible = function (visible) {
-        var stop = $("#bcomm-tab-" + this.getId() + " .bcomm-stop-icon");
+        const stop = $(`#bcomm-tab-${this.getId()}.bcomm-stop-icon`);
         stop.css("visibility", visible ? "visible" : "hidden");
     };
 
     TerminalService.prototype._attachKeyPressed = function () {
-        var that = this;
+        const that = this;
 
-        this._xterminal.on("keydown", function (event) {
+        this._xterminal.on("keydown", (event) => {
             if (event.ctrlKey && event.keyCode === 67) {
                 that._stopCommand();
                 return;
             }
         });
 
-        this._xterminal.on("key", function (key, event) {
+        this._xterminal.on("key", (key, event) => {
             if (that.getLockedInput() === true) {
                 return;
             }
@@ -104,7 +102,7 @@ define(function (require, exports, module) {
                 that._fileSystemPath = ProjectManager.getProjectRoot().fullPath;
             }
 
-            var printable = (!event.altKey && !event.altGraphKey && !event.ctrlKey && !event.metaKey);
+            const printable = (!event.altKey && !event.altGraphKey && !event.ctrlKey && !event.metaKey);
 
             switch (event.keyCode) {
                 case 13:
@@ -120,8 +118,9 @@ define(function (require, exports, module) {
                 default:
                     if (printable) {
                         that._xterminal.write(key);
+
                         if (key.length === 1) {
-                            var stringIndex = that._xterminal.x - 2;
+                            const stringIndex = that._xterminal.x - 2;
                             that._commandString = that._commandString.substr(0, stringIndex) + key + that._commandString.substr(stringIndex + key.length);
                         }
                     }
@@ -130,9 +129,9 @@ define(function (require, exports, module) {
     };
 
     TerminalService.prototype._attachStopCommand = function () {
-        var that = this;
-        var stop = $("#bcomm-tab-" + that.getId() + " .bcomm-stop-icon");
-        stop.on("click", function () {
+        const that = this;
+        const stop = $(`#bcomm-tab-${that.getId()}.bcomm-stop-icon`);
+        stop.on("click", () => {
             that._stopCommand();
         });
     };
@@ -163,7 +162,8 @@ define(function (require, exports, module) {
     };
 
     TerminalService.prototype._handleArrow = function (key) {
-        var command;
+        let command;
+
         switch (key) {
             case 38:
                 command = Executor.getCommandFromHistory("UP");
@@ -174,10 +174,12 @@ define(function (require, exports, module) {
         }
 
         if (command) {
-            var cursorPosition = this._xterminal.x;
-            for (var i = 0; i < cursorPosition - 2; i++) {
+            const cursorPosition = this._xterminal.x;
+
+            for (let i = 0; i < cursorPosition - 2; i++) {
                 this._xterminal.write("\b \b");
             }
+
             this._commandString = command;
             this._xterminal.write(command);
         }

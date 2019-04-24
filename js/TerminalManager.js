@@ -1,30 +1,29 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, $, brackets */
-define(function(require, exports) {
+define((require, exports) => {
     "use strict";
 
-    var CommandManager = brackets.getModule("command/CommandManager"),
-        WorkspaceManager = brackets.getModule("view/WorkspaceManager");
-
-    var TerminalService = require("js/TerminalService"),
+    const CommandManager = brackets.getModule("command/CommandManager"),
+        WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
+        TerminalService = require("js/TerminalService"),
         Common = require("js/Common");
 
-    var terminalInstances = {},
-        terminalCounter = 0,
+    const terminalInstances = {};
+
+    let terminalCounter = 0,
         terminalPanel = null,
         terminalPanelVisible = false;
 
     initTerminalPanel();
 
     function initTerminalPanel() {
-        var panelHtml = require("text!../view/terminal-panel.html");
+        const panelHtml = require("text!../view/terminal-panel.html");
         terminalPanel = WorkspaceManager.createBottomPanel("brackets-commander.terminal-panel", $(panelHtml), 130);
 
-        $("#bcomm-panel .close").click(function() {
+        $("#bcomm-panel .close").click(() => {
             hideTerminalPanel();
         });
 
-        $("#bcomm-panel").on("panelResizeEnd", function() {
+        $("#bcomm-panel").on("panelResizeEnd", () => {
             _fitTerminals();
         });
 
@@ -49,7 +48,7 @@ define(function(require, exports) {
     }
 
     function _createTerminal(active) {
-        var terminal = new TerminalService();
+        const terminal = new TerminalService();
         terminalCounter++;
         terminalInstances[terminal.getId()] = terminal;
         _insertTerminalToPanel(terminal, active);
@@ -63,19 +62,21 @@ define(function(require, exports) {
 
     function _removeTerminal(terminal) {
         terminal.close();
-        $("#" + terminal.getId()).remove();
-        $("#bcomm-tab-" + terminal.getId()).remove();
+        $(`#${terminal.getId()}`).remove();
+        $(`#bcomm-tab-${terminal.getId()}`).remove();
         terminalCounter--;
     }
 
     function _insertTerminalToPanel(terminal, active) {
-        var tabItemId = "bcomm-tab-" + terminal.getId();
-        var tabItem = "<li id='" + tabItemId + "'";
+        const tabItemId = "bcomm-tab-" + terminal.getId();
+        let tabItem = "<li id='" + tabItemId + "'";
+
         if (active) {
             tabItem += " class='active terminal-tab'>";
         } else {
             tabItem += ">";
         }
+
         tabItem += "<a id='" + tabItemId + "-close'" +
             "href='#'" +
             "class='close bcomm-tab-icon'>" +
@@ -95,8 +96,9 @@ define(function(require, exports) {
     }
 
     function _fitTerminals() {
-        var terminal;
-        for (var i in terminalInstances) {
+        let terminal;
+
+        for (const i in terminalInstances) {
             terminal = terminalInstances[i];
             if (terminal !== undefined) {
                 terminal.fit();
@@ -105,9 +107,10 @@ define(function(require, exports) {
     }
 
     function _attachCloseTerminal(terminal) {
-        $("#bcomm-tabs").on("click", "#bcomm-tab-" + terminal.getId() + " .close", function() {
+        $("#bcomm-tabs").on("click", "#bcomm-tab-" + terminal.getId() + " .close", () => {
             _removeTerminal(terminal);
             _setTerminalTabNames();
+
             if (terminalCounter > 0) {
                 _setActiveTerminal(terminalCounter);
             }
@@ -115,32 +118,32 @@ define(function(require, exports) {
     }
 
     function _attachSelectTerminal($tabItem) {
-        $tabItem.on("click", function() {
+        $tabItem.on("click", function () {
             $("#bcomm-tabs li").removeClass("active");
             $(this).parent().addClass("active");
             $("#bcomm-terminals").children("div").hide();
-            var activeTab = $(this).attr("href");
+            const activeTab = $(this).attr("href");
             $(activeTab).show();
         });
     }
 
     function _attachAppendTerminal() {
-        $("#bcomm-append-link").on("click", function() {
+        $("#bcomm-append-link").on("click", () => {
             $("#bcomm-tabs li").removeClass("active");
-            var terminal = _createTerminal(true);
+            const terminal = _createTerminal(true);
             $("#bcomm-terminals").children("div").hide();
             $("#" + terminal.getId()).show();
         });
     }
 
     function _setTerminalTabNames() {
-        $("#bcomm-tabs").find(".bcomm-tab-name").each(function(index) {
+        $("#bcomm-tabs").find(".bcomm-tab-name").each(function (index) {
             $(this).text("Terminal " + (++index));
         });
     }
 
     function _setActiveTerminal(terminalIndex) {
-        $("#bcomm-tabs").find(".bcomm-tab-name").each(function(index) {
+        $("#bcomm-tabs").find(".bcomm-tab-name").each(function (index) {
             if (++index === terminalIndex) {
                 $(this).click();
             }

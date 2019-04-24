@@ -1,6 +1,5 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define */
-define(function(require, exports) {
+define((require, exports) => {
     "use strict";
 
     function generateId() {
