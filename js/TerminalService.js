@@ -6,16 +6,19 @@ define((require, exports, module) => {
         ProjectManager = brackets.getModule("project/ProjectManager"),
         Common = require("js/Common"),
         Executor = require("js/Executor"),
-        XTerm = require("../node_modules/xterm/dist/xterm"),
-        terminalInstanceHtml = require("text!../view/terminal-instance.html");
+        XTerm = require("../node/node_modules/xterm/dist/xterm"),
+        terminalInstanceHtml = require("text!../view/terminal-instance.html"),
+        fit = require("../node/node_modules/xterm/dist/addons/fit/fit");
 
-    require("../node_modules/xterm/dist/addons/fit/fit");
+    XTerm.applyAddon(fit);
 
     function TerminalService() {
         this._id = `terminal-${Common.generateId()}`;
+
         this._terminalHtml = Mustache.render(terminalInstanceHtml, {
             "TERMINAL_ID": this._id
         });
+
         this._fileSystemPath = null;
         this._commandString = "";
         this._xterminal = null;
@@ -60,9 +63,11 @@ define((require, exports, module) => {
 
     TerminalService.prototype.open = function () {
         const terminalContainer = document.getElementById(this.getId());
+
         this._xterminal = new XTerm({
             cursorBlink: true
         });
+
         this._xterminal.open(terminalContainer);
         this._xterminal.write("> ");
         this._attachKeyPressed();

@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    const NODE_DOMAIN = "BracketsCommander",
-        OUTPUT_DATA_EVENT = "outputData";
-
     const exec = require("child_process").exec,
         treekill = require("treekill");
+
+    const NODE_DOMAIN = "BracketsCommander",
+        OUTPUT_DATA_EVENT = "outputData";
 
     let _domainManager;
 

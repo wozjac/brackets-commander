@@ -28,12 +28,16 @@ define((require, exports) => {
         });
 
         _attachAppendTerminal();
-        _createTerminal(true);
     }
 
     function showTerminalPanel() {
         terminalPanel.show();
         terminalPanelVisible = true;
+
+        if (terminalCounter === 0) {
+            _createTerminal(true);
+        }
+
         _fitTerminals();
     }
 
@@ -54,9 +58,11 @@ define((require, exports) => {
         _insertTerminalToPanel(terminal, active);
         _attachCloseTerminal(terminal);
         terminal.open();
+
         if (terminalPanelVisible === true) {
             terminal.fit();
         }
+
         return terminal;
     }
 

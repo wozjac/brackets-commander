@@ -10,8 +10,8 @@ define((require, exports, module) => {
         Common = require("js/Common");
 
     ExtensionUtils.loadStyleSheet(module, "css/style.css");
-    ExtensionUtils.loadStyleSheet(module, "node_modules/xterm/dist/xterm.css");
-    ExtensionUtils.loadStyleSheet(module, "node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
+    ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/xterm.css");
+    ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
 
     CommandManager.register("Show terminal panel", Common.OPEN_TERMINAL_COMMAND_ID, handleOpenTerminalCommand);
     addCommandToMenu();
