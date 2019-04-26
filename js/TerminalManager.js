@@ -1,11 +1,19 @@
 /*global define, $, brackets */
-define((require, exports) => {
+define((require, exports, module) => {
     "use strict";
 
     const CommandManager = brackets.getModule("command/CommandManager"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
-        TerminalService = require("js/TerminalService"),
-        Common = require("js/Common");
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        NodeDomain = brackets.getModule("utils/NodeDomain"),
+        Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        Terminal = require("js/Terminal"),
+        common = require("js/common"),
+        strings = require("strings"),
+        terminalTabHtml = require("text!../view/terminal-tab.html"),
+        execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
+
+    execDomain.on("outputData", _handleOutputDataFromPseudoterminal);
 
     const terminalInstances = {};
 
@@ -38,13 +46,13 @@ define((require, exports) => {
             _createTerminal(true);
         }
 
-        _fitTerminals();
+        //_fitTerminals();
     }
 
     function hideTerminalPanel() {
         terminalPanel.hide();
         terminalPanelVisible = false;
-        CommandManager.get(Common.OPEN_TERMINAL_COMMAND_ID).setChecked(false);
+        CommandManager.get(common.OPEN_TERMINAL_COMMAND_ID).setChecked(false);
     }
 
     function getTerminalInstance(terminalId) {
@@ -52,18 +60,35 @@ define((require, exports) => {
     }
 
     function _createTerminal(active) {
-        const terminal = new TerminalService();
-        terminalCounter++;
-        terminalInstances[terminal.getId()] = terminal;
-        _insertTerminalToPanel(terminal, active);
-        _attachCloseTerminal(terminal);
-        terminal.open();
+        _createPseudoTerminal()
+            .done((pid) => {
+                const terminal = new Terminal(pid);
+                terminalCounter++;
+                terminalInstances[terminal.getId()] = terminal;
+                _insertTerminalToPanel(terminal, active);
+                _attachCloseTerminal(terminal);
+                terminal.open();
 
-        if (terminalPanelVisible === true) {
-            terminal.fit();
+                if (terminalPanelVisible === true) {
+                    terminal.fit();
+                }
+            })
+            .fail((error) => {
+                console.log(error);
+            });
+    }
+
+    function _handleOutputDataFromPseudoterminal(event, pid, data) {
+        //if (data.terminalId in activeProcesses === false) {
+        //    activeProcesses[data.terminalId] = {
+        //        processId: data.processId
+        //    };
+        //}
+
+        if (data && data.length > 0) {
+            const terminal = terminalInstances[pid];
+            terminal.write(data);
         }
-
-        return terminal;
     }
 
     function _removeTerminal(terminal) {
@@ -74,30 +99,42 @@ define((require, exports) => {
     }
 
     function _insertTerminalToPanel(terminal, active) {
-        const tabItemId = "bcomm-tab-" + terminal.getId();
-        let tabItem = "<li id='" + tabItemId + "'";
+        const tabItemId = `bcomm-tab-${terminal.getId()}`;
+
+        const $tab = $(Mustache.render(terminalTabHtml, {
+            id: tabItemId,
+            title: `Terminal ${terminalCounter}`
+        }));
 
         if (active) {
-            tabItem += " class='active terminal-tab'>";
-        } else {
-            tabItem += ">";
+            $tab.addClass("active terminal-tab");
         }
 
-        tabItem += "<a id='" + tabItemId + "-close'" +
-            "href='#'" +
-            "class='close bcomm-tab-icon'>" +
-            "&times;</a>";
-        tabItem += "<a id='" + tabItemId + "-select'" +
-            "href='#" + terminal.getId() +
-            "' class='bcomm-tab-name'>" +
-            "Terminal " + terminalCounter +
-            "</a>" +
-            "<a href='#'>" +
-            "<span class='bcomm-stop-icon octicon octicon-primitive-square'>" +
-            "</a></span></li>";
+        $tab.insertBefore("#bcomm-add-tab");
 
-        $("#bcomm-append-item").before(tabItem);
-        _attachSelectTerminal($("#" + tabItemId + "-select"));
+        //let tabItem = "<li id='" + tabItemId + "'";
+        //
+        //if (active) {
+        //    tabItem += " class='active terminal-tab'>";
+        //} else {
+        //    tabItem += ">";
+        //}
+        //
+        //tabItem += "<a id='" + tabItemId + "-close'" +
+        //    "href='#'" +
+        //    "class='close bcomm-tab-icon'>" +
+        //    "&times;</a>";
+        //tabItem += "<a id='" + tabItemId + "-select'" +
+        //    "href='#" + terminal.getId() +
+        //    "' class='bcomm-tab-name'>" +
+        //    "Terminal " + terminalCounter +
+        //    "</a>" +
+        //    "<a href='#'>" +
+        //    "<span class='bcomm-stop-icon octicon octicon-primitive-square'>" +
+        //    "</a></span></li>";
+        //
+        //$("#bcomm-add-tab").before(tabItem);
+        //_attachSelectTerminal($("#" + tabItemId + "-select"));
         $("#bcomm-terminals").append(terminal.getHtml());
     }
 
@@ -153,6 +190,12 @@ define((require, exports) => {
             if (++index === terminalIndex) {
                 $(this).click();
             }
+        });
+    }
+
+    function _createPseudoTerminal() {
+        return execDomain.exec("createPseudoterminal", {
+            cwd: common.getWorkingDirectory()
         });
     }
 

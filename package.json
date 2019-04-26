@@ -1,13 +1,13 @@
 {
     "name": "wozjac.brackets-commander",
     "title": "Brackets Commander",
-    "description": "Brackets extension providing a tabbed console interface for running commands",
+    "description": "Terminal panel for Brackets editor",
     "homepage": "https://github.com/wozjac/brackets-commander",
-    "version": "0.2.1",
+    "version": "0.3.0s",
     "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk)",
     "license": "MIT",
     "engines": {
-        "brackets": ">=0.24.0"
+        "brackets": ">=1.13.0"
     },
     "i18n": [
         "en"
@@ -20,8 +20,6 @@
         "shell"
     ],
     "dependencies": {
-        "node-pty-prebuilt": "^0.7.6",
-        "treekill": "^1.0.0",
         "xterm": "^3.12.2"
     },
     "devDependencies": {

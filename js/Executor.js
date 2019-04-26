@@ -4,6 +4,7 @@ define((require, exports, module) => {
 
     const NodeDomain = brackets.getModule("utils/NodeDomain"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        Common = require("js/Common"),
         TerminalManager = require("js/TerminalManager");
 
     const execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/ExecDomain"));
@@ -14,7 +15,7 @@ define((require, exports, module) => {
 
     let commandHistoryState = 0;
 
-    function handleDomainOutputData(event, data) {
+    function handleDomainOutputData(event, pid, data) {
         if (data.terminalId in activeProcesses === false) {
             activeProcesses[data.terminalId] = {
                 processId: data.processId
@@ -97,7 +98,14 @@ define((require, exports, module) => {
         }
     }
 
+    function spawnPty() {
+        return execDomain.exec("createPty", {
+            cwd: Common.getWorkingDirectory()
+        });
+    }
+
     exports.getCommandFromHistory = getCommandFromHistory;
     exports.runCommand = runCommand;
+    exports.spawnPty = spawnPty;
     exports.stopCommand = stopCommand;
 });

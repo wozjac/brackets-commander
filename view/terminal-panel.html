@@ -1,22 +1,29 @@
-<div id="bcomm-panel"
-    class="bottom-panel vert-resizable top-resizer">
+<div id="bcomm-panel" class="bottom-panel vert-resizable top-resizer">
     <div class="toolbar simple-toolbar-layout">
-        <div class="title">Brackets Commander</div>
-        <a href="#"
-            class="close">&times;
-        </a>
+        <!--<div class="title">Brackets Commander</div>-->
+        <div class="btn-container">
+            <button class="btn no-focus first" id="bcomm-clear" title="Clear">Clear</button>
+        </div>
+        <div class="nav-container">
+            <ul class="bcomm-tabs">
+                <li id="bcomm-add-tab">
+                    <a href="#" class="no-focus bcomm-append-link">+</a>
+                </li>
+            </ul>
+        </div>
+        <a href="#" class="close">&times;</a>
     </div>
+    <!--
     <div id="bcomm-tabs-wrapper">
-        <ul id="bcomm-tabs"
-            class="bcomm-tabs">
+        <ul id="bcomm-tabs" class="bcomm-tabs">
             <li id="bcomm-append-item">
-                <a id="bcomm-append-link"
-                    href="#">
+                <a id="bcomm-append-link" href="#">
                     &plus;
                 </a>
             </li>
         </ul>
     </div>
-    <div id="bcomm-terminals">
+    -->
+    <div id="bcomm-terminals" class="resizable-content tab-content">
     </div>
 </div>

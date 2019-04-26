@@ -1,3 +1,79 @@
+#bcomm-panel {
+    -webkit-user-select: auto;
+    user-select: auto;
+}
+
+#bcomm-panel .toolbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#bcomm-panel .toolbar .btn-container {
+    margin-right: 8px;
+}
+
+#bcomm-panel .toolbar .btn {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+/*
+#bcomm-panel .toolbar .btn.first {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+*/
+
+#bcomm-panel .toolbar .btn.middle {
+    border-radius: 0;
+    border-right: 0;
+}
+
+#bcomm-panel .toolbar .btn.last {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/*
+#bcomm-panel .toolbar .nav-container .nav.nav-tabs {
+    border-bottom: none;
+    margin: 0;
+}
+
+#bcomm-panel .toolbar .nav-container .nav.nav-tabs .close {
+    display: none;
+}
+
+#bcomm-panel .toolbar .nav-container .nav.nav-tabs .add-tab {
+    width: auto;
+}
+
+#bcomm-panel .toolbar li {
+    width: 120px;
+}
+
+#bcomm-panel .toolbar li a {
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#bcomm-panel .toolbar li a p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 80px;
+    margin: 0;
+}
+*/
+
+#bcomm-panel .toolbar .title {
+    margin-left: 10px;
+}
+
+/* old */
 #bcomm-tabs-wrapper {
     overflow: hidden;
     border-bottom: gray solid 1px;
@@ -5,8 +81,6 @@
 }
 
 #bcomm-terminals {
-    margin-top: 3px;
-    padding: 2px;
     height: calc(100% - 65px);
 }
 
@@ -26,10 +100,9 @@
 
 
 /* Terminal tabs */
-
 ul.bcomm-tabs {
     list-style-type: none;
-    margin: 5px 0 0 0;
+    margin: 2px 0 2px 0;
     padding: 0;
 }
 
@@ -39,6 +112,8 @@ ul.bcomm-tabs li {
     float: left;
     margin: 0 .25em 0 0;
     padding: .25em .5em;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 ul.bcomm-tabs li a {
