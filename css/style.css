@@ -36,52 +36,12 @@
     border-bottom-left-radius: 0;
 }
 
-/*
-#bcomm-panel .toolbar .nav-container .nav.nav-tabs {
-    border-bottom: none;
-    margin: 0;
-}
-
-#bcomm-panel .toolbar .nav-container .nav.nav-tabs .close {
-    display: none;
-}
-
-#bcomm-panel .toolbar .nav-container .nav.nav-tabs .add-tab {
-    width: auto;
-}
-
-#bcomm-panel .toolbar li {
-    width: 120px;
-}
-
-#bcomm-panel .toolbar li a {
-    position: relative;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-#bcomm-panel .toolbar li a p {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 80px;
-    margin: 0;
-}
-*/
-
 #bcomm-panel .toolbar .title {
     margin-left: 10px;
 }
 
-/* old */
-#bcomm-tabs-wrapper {
-    overflow: hidden;
-    border-bottom: gray solid 1px;
-    height: 31px;
-}
-
-#bcomm-terminals {
-    height: calc(100% - 65px);
+#bcomm-terminals .terminal.xterm {
+    height: 100%;
 }
 
 .bcomm-xterm-container {
@@ -89,15 +49,6 @@
     -webkit-user-select: text !important;
     user-select: text !important;
 }
-
-.bcomm-stop-icon {
-    color: #bc1212;
-    padding: 0 0 0 4px;
-    float: clear;
-    vertical-align: middle;
-    visibility: hidden;
-}
-
 
 /* Terminal tabs */
 ul.bcomm-tabs {
@@ -135,13 +86,4 @@ ul.bcomm-tabs li.active a {
 
 .bcomm-tab-icon {
     margin-left: 4px;
-}
-
-#bcomm-append-link {
-    padding: 0 .5em 0 .5em;
-    border: 0;
-}
-
-#bcomm-append-item {
-    padding: .25em 0;
 }

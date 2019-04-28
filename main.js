@@ -1,11 +1,21 @@
-/*global define, brackets*/
+require.config({
+    paths: {
+        "text": "lib/text",
+        "i18n": "lib/i18n"
+    },
+    locale: brackets.getLocale()
+});
+
 define((require, exports, module) => {
     "use strict";
 
     const CommandManager = brackets.getModule("command/CommandManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         Menus = brackets.getModule("command/Menus"),
+        WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
+        AppInit = brackets.getModule("utils/AppInit"),
         terminalManager = require("js/terminalManager"),
+        preferences = require("js/preferences"),
         common = require("js/common");
 
     ExtensionUtils.loadStyleSheet(module, "css/style.css");
@@ -13,7 +23,12 @@ define((require, exports, module) => {
     ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
 
     CommandManager.register("Show terminal panel", common.OPEN_TERMINAL_COMMAND_ID, handleOpenTerminalCommand);
+    WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, handleWindowResize);
     addCommandToMenu();
+
+    AppInit.appReady(() => {
+        preferences.initPreferences();
+    });
 
     function addCommandToMenu() {
         const menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
@@ -31,5 +46,9 @@ define((require, exports, module) => {
             showTerminalCommand.setChecked(true);
             terminalManager.showTerminalPanel();
         }
+    }
+
+    function handleWindowResize() {
+        terminalManager.fitTerminals();
     }
 });

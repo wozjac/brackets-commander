@@ -1,4 +1,3 @@
-/*global define, $, brackets */
 define((require, exports, module) => {
     "use strict";
 
@@ -9,6 +8,7 @@ define((require, exports, module) => {
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         Terminal = require("js/Terminal"),
         common = require("js/common"),
+        prefs = require("js/preferences"),
         strings = require("strings"),
         terminalTabHtml = require("text!../view/terminal-tab.html"),
         execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
@@ -19,7 +19,8 @@ define((require, exports, module) => {
 
     let terminalCounter = 0,
         terminalPanel = null,
-        terminalPanelVisible = false;
+        terminalPanelVisible = false,
+        activeTerminalId = null;
 
     initTerminalPanel();
 
@@ -31,8 +32,19 @@ define((require, exports, module) => {
             hideTerminalPanel();
         });
 
+        $("#bcomm-clear").click(() => {
+            if (activeTerminalId) {
+                try {
+                    const terminal = terminalInstances[activeTerminalId];
+                    terminal.clear();
+                } catch (error) {
+                    console.error(strings.PTY_NOT_EXIST.replace("$1", activeTerminalId));
+                }
+            }
+        });
+
         $("#bcomm-panel").on("panelResizeEnd", () => {
-            _fitTerminals();
+            fitTerminals();
         });
 
         _attachAppendTerminal();
@@ -46,7 +58,7 @@ define((require, exports, module) => {
             _createTerminal(true);
         }
 
-        //_fitTerminals();
+        fitTerminals();
     }
 
     function hideTerminalPanel() {
@@ -67,34 +79,66 @@ define((require, exports, module) => {
                 terminalInstances[terminal.getId()] = terminal;
                 _insertTerminalToPanel(terminal, active);
                 _attachCloseTerminal(terminal);
+                _attachSelectTerminal(terminal);
+
                 terminal.open();
 
                 if (terminalPanelVisible === true) {
                     terminal.fit();
                 }
+
+                terminal.on("commandEntered", (event, pid, command) => {
+                    _setTabTitle(pid, command);
+                });
             })
             .fail((error) => {
-                console.log(error);
+                console.error(error);
             });
     }
 
     function _handleOutputDataFromPseudoterminal(event, pid, data) {
-        //if (data.terminalId in activeProcesses === false) {
-        //    activeProcesses[data.terminalId] = {
-        //        processId: data.processId
-        //    };
-        //}
-
         if (data && data.length > 0) {
             const terminal = terminalInstances[pid];
             terminal.write(data);
         }
     }
 
+    function _setTabTitle(pid, command) {
+        let title = command.trim();
+
+        if (!title || title.length === 0) {
+            return;
+        }
+
+        if (title.length > 9) {
+            title = `${title.substring(0, 7)}...`;
+        }
+
+        const $tabs = $("#bcomm-nav-tabs");
+        const $tab = $tabs.find(`#bcomm-tab-${pid}-title`);
+        $tab.text(title);
+        $tab.prop("title", title);
+    }
+
     function _removeTerminal(terminal) {
         terminal.close();
+        const $tab = $(`#bcomm-tab-${terminal.getId()}`);
         $(`#${terminal.getId()}`).remove();
-        $(`#bcomm-tab-${terminal.getId()}`).remove();
+
+        if (activeTerminalId &&
+            terminal.getId() === activeTerminalId &&
+            terminalCounter > 1) {
+
+            let $newActiveTab = $tab.prev();
+
+            if ($newActiveTab.length === 0) {
+                $newActiveTab = $tab.next();
+            }
+
+            _setActiveTerminal($newActiveTab);
+        }
+
+        $tab.remove();
         terminalCounter--;
     }
 
@@ -107,38 +151,14 @@ define((require, exports, module) => {
         }));
 
         if (active) {
-            $tab.addClass("active terminal-tab");
+            _setActiveTerminal($tab);
         }
 
         $tab.insertBefore("#bcomm-add-tab");
-
-        //let tabItem = "<li id='" + tabItemId + "'";
-        //
-        //if (active) {
-        //    tabItem += " class='active terminal-tab'>";
-        //} else {
-        //    tabItem += ">";
-        //}
-        //
-        //tabItem += "<a id='" + tabItemId + "-close'" +
-        //    "href='#'" +
-        //    "class='close bcomm-tab-icon'>" +
-        //    "&times;</a>";
-        //tabItem += "<a id='" + tabItemId + "-select'" +
-        //    "href='#" + terminal.getId() +
-        //    "' class='bcomm-tab-name'>" +
-        //    "Terminal " + terminalCounter +
-        //    "</a>" +
-        //    "<a href='#'>" +
-        //    "<span class='bcomm-stop-icon octicon octicon-primitive-square'>" +
-        //    "</a></span></li>";
-        //
-        //$("#bcomm-add-tab").before(tabItem);
-        //_attachSelectTerminal($("#" + tabItemId + "-select"));
         $("#bcomm-terminals").append(terminal.getHtml());
     }
 
-    function _fitTerminals() {
+    function fitTerminals() {
         let terminal;
 
         for (const i in terminalInstances) {
@@ -150,51 +170,40 @@ define((require, exports, module) => {
     }
 
     function _attachCloseTerminal(terminal) {
-        $("#bcomm-tabs").on("click", "#bcomm-tab-" + terminal.getId() + " .close", () => {
+        $("#bcomm-nav-tabs").on("click", `#bcomm-tab-${terminal.getId()} .bcomm-close`, () => {
             _removeTerminal(terminal);
-            _setTerminalTabNames();
 
-            if (terminalCounter > 0) {
-                _setActiveTerminal(terminalCounter);
+            if (terminalCounter === 0) {
+                activeTerminalId = null;
             }
         });
     }
 
-    function _attachSelectTerminal($tabItem) {
-        $tabItem.on("click", function () {
-            $("#bcomm-tabs li").removeClass("active");
-            $(this).parent().addClass("active");
+    function _attachSelectTerminal(terminal) {
+        $("#bcomm-nav-tabs").find(`#bcomm-tab-${terminal.getId()}-a`).on("shown", () => {
             $("#bcomm-terminals").children("div").hide();
-            const activeTab = $(this).attr("href");
-            $(activeTab).show();
+            $(`#${terminal.getId()}`).show();
+            activeTerminalId = terminal.getId();
         });
     }
 
     function _attachAppendTerminal() {
-        $("#bcomm-append-link").on("click", () => {
-            $("#bcomm-tabs li").removeClass("active");
-            const terminal = _createTerminal(true);
+        $("#bcomm-add-tab").on("click", () => {
+            $("#bcomm-nav-tabs li").removeClass("active");
+            _createTerminal(true);
             $("#bcomm-terminals").children("div").hide();
-            $("#" + terminal.getId()).show();
         });
     }
 
-    function _setTerminalTabNames() {
-        $("#bcomm-tabs").find(".bcomm-tab-name").each(function (index) {
-            $(this).text("Terminal " + (++index));
-        });
-    }
-
-    function _setActiveTerminal(terminalIndex) {
-        $("#bcomm-tabs").find(".bcomm-tab-name").each(function (index) {
-            if (++index === terminalIndex) {
-                $(this).click();
-            }
-        });
+    function _setActiveTerminal($tab) {
+        $tab.addClass("active terminal-tab");
+        activeTerminalId = parseInt($tab.prop("id").replace("bcomm-tab-", ""));
+        $(`#${activeTerminalId}`).show();
     }
 
     function _createPseudoTerminal() {
         return execDomain.exec("createPseudoterminal", {
+            shellPath: prefs.get(common.prefs.SHELL_PATH),
             cwd: common.getWorkingDirectory()
         });
     }
@@ -202,4 +211,5 @@ define((require, exports, module) => {
     exports.showTerminalPanel = showTerminalPanel;
     exports.hideTerminalPanel = hideTerminalPanel;
     exports.getTerminalInstance = getTerminalInstance;
+    exports.fitTerminals = fitTerminals;
 });

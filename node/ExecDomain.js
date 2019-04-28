@@ -1,6 +1,6 @@
 "use strict";
 
-const PTY = require("node-pty"),
+const PTY = require("node-pty-win"),
     process = require("process"),
     NODE_DOMAIN = "BracketsCommander",
     OUTPUT_DATA_EVENT = "outputData",
@@ -144,7 +144,7 @@ function closePseudoterminal(pid) {
     try {
         const pty = pseudoTerminals[pid];
         delete pseudoTerminals[pid];
-        pty.kill();
+        pty.destroy();
     } catch (error) {
         throw new Error(PTY_NOT_EXIST);
     }

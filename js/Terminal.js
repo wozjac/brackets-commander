@@ -1,8 +1,8 @@
-/* global brackets, define, document */
 define((require, exports, module) => {
     "use strict";
 
     const Mustache = brackets.getModule("thirdparty/mustache/mustache"),
+        EventDispatcher = brackets.getModule("utils/EventDispatcher"),
         XTerm = require("../node/node_modules/xterm/dist/xterm"),
         NodeDomain = brackets.getModule("utils/NodeDomain"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
@@ -16,6 +16,7 @@ define((require, exports, module) => {
     class Terminal {
         constructor(pid) {
             this._id = pid;
+            this._commandString = "";
 
             this._terminalHtml = Mustache.render(terminalInstanceHtml, {
                 "TERMINAL_ID": this._id
@@ -35,6 +36,7 @@ define((require, exports, module) => {
         fit() {
             if (this._xterminal) {
                 this._xterminal.fit();
+                this._xterminal.refresh(0, this._xterminal.rows - 1);
 
                 execDomain.exec("resizePseudoterminal", this._id, this._xterminal.cols, this._xterminal.rows)
                     .fail((error) => {
@@ -45,6 +47,10 @@ define((require, exports, module) => {
 
         write(text) {
             this._xterminal.write(text);
+        }
+
+        clear() {
+            this._xterminal.clear();
         }
 
         open() {
@@ -59,10 +65,19 @@ define((require, exports, module) => {
             this._xterminal.focus();
 
             this._xterminal.on("data", (data) => {
+                this._commandString += data;
+
                 execDomain.exec("writeToPseudoterminal", this._id, data)
                     .fail((error) => {
                         this._handleExecDomainError(error, this._id);
                     });
+            });
+
+            this._xterminal.on("keydown", (event) => {
+                if (event.keyCode === 13) {
+                    this.trigger("commandEntered", this._id, this._commandString);
+                    this._commandString = "";
+                }
             });
         }
 
@@ -85,10 +100,11 @@ define((require, exports, module) => {
                 default:
             }
 
-            console.log(message);
+            console.error(message);
             console.trace();
         }
     }
 
+    EventDispatcher.makeEventDispatcher(Terminal.prototype);
     module.exports = Terminal;
 });

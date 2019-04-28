@@ -1,8 +1,12 @@
-/* global define */
 define((require, exports) => {
     "use strict";
 
     const ProjectManager = brackets.getModule("project/ProjectManager");
+
+    const preferences = {
+        PREFS_PREFIX: "bracketsCommander",
+        SHELL_PATH: "shellPath"
+    };
 
     function generateId() {
         return Math.ceil(Math.random() * 100000);
@@ -20,4 +24,5 @@ define((require, exports) => {
 
     exports.NODE_DOMAIN = "BracketsCommander";
     exports.OUTPUT_DATA_EVENT = "outputData";
+    exports.prefs = preferences;
 });
