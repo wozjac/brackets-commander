@@ -21,7 +21,7 @@ Features
 
 Installation
 ------------
-1. Download the ZIP file
+1. Download the ZIP file from [Releases](https://github.com/wozjac/brackets-commander/releases)
 2. Drag the file in the Extension Manager in Brackets
 
 Usage
