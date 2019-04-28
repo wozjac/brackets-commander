@@ -22,7 +22,9 @@ Features
 Installation
 ------------
 1. Download the ZIP file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2. Drag the file in the Extension Manager in Brackets
+2. Unzip to a folder "wozjac.commander"
+3. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
+C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
 
 Usage
 -----
