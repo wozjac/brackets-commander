@@ -212,6 +212,7 @@ define((require, exports, module) => {
     function _setActiveTerminal($tab) {
         $tab.addClass("active terminal-tab");
         activeTerminalId = parseInt($tab.prop("id").replace("bcomm-tab-", ""));
+        terminalInstances[activeTerminalId].focus();
         $(`#${activeTerminalId}`).show();
     }
 

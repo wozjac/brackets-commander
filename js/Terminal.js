@@ -46,11 +46,21 @@ define((require, exports, module) => {
         }
 
         write(text) {
-            this._xterminal.write(text);
+            if (this._xterminal) {
+                this._xterminal.write(text);
+            }
         }
 
         clear() {
-            this._xterminal.clear();
+            if (this._xterminal) {
+                this._xterminal.clear();
+            }
+        }
+
+        focus() {
+            if (this._xterminal) {
+                this._xterminal.focus();
+            }
         }
 
         open() {
@@ -65,7 +75,9 @@ define((require, exports, module) => {
             this._xterminal.focus();
 
             this._xterminal.on("data", (data) => {
-                this._commandString += data;
+                if (data && data.charCodeAt(0) !== 127) { //skip delete
+                    this._commandString += data;
+                }
 
                 execDomain.exec("writeToPseudoterminal", this._id, data)
                     .fail((error) => {
@@ -74,9 +86,16 @@ define((require, exports, module) => {
             });
 
             this._xterminal.on("keydown", (event) => {
-                if (event.keyCode === 13) {
-                    this.trigger("commandEntered", this._id, this._commandString);
-                    this._commandString = "";
+                switch (event.keyCode) {
+                    case 13:
+                        this.trigger("commandEntered", this._id, this._commandString);
+                        this._commandString = "";
+                        break;
+                    case 8:
+                        if (this._commandString.length >= 1) {
+                            this._commandString = this._commandString.slice(0, -1);
+                        }
+                        break;
                 }
             });
         }

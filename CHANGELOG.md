@@ -1,5 +1,11 @@
 Changelog
 ------------
+##### 0.3.0
+- add pseudoterminal layer: node-pty for Windows
+- add toolbar icon
+- refresh terminal tabs style, refactor event handling
+- add "Clear" button
+
 ##### 0.2.2
 - bugfix: incorrect handling of arrows & typing over existing text
 
