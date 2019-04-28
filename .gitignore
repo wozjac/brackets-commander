@@ -2,3 +2,4 @@
 /.jsbeautifyrc
 node_modules
 /.brackets.json
+/dist/
