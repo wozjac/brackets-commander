@@ -18,7 +18,7 @@ define((require, exports, module) => {
         preferences = require("js/preferences"),
         common = require("js/common");
 
-    ExtensionUtils.loadStyleSheet(module, "css/style.css");
+    ExtensionUtils.loadStyleSheet(module, "assets/style.css");
     ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/xterm.css");
     ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
 

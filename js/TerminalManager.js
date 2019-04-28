@@ -8,6 +8,7 @@ define((require, exports, module) => {
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         Terminal = require("js/Terminal"),
         common = require("js/common"),
+        toolbarButton = require("js/toolbarButton"),
         prefs = require("js/preferences"),
         strings = require("strings"),
         terminalTabHtml = require("text!../view/terminal-tab.html"),
@@ -20,7 +21,8 @@ define((require, exports, module) => {
     let terminalCounter = 0,
         terminalPanel = null,
         terminalPanelVisible = false,
-        activeTerminalId = null;
+        activeTerminalId = null,
+        toolbarButtonIcon = null;
 
     initTerminalPanel();
 
@@ -48,11 +50,22 @@ define((require, exports, module) => {
         });
 
         _attachAppendTerminal();
+
+        toolbarButtonIcon = toolbarButton.create();
+
+        toolbarButtonIcon.addOnClickHandler((isEnabled) => {
+            if (isEnabled) {
+                hideTerminalPanel();
+            } else {
+                showTerminalPanel();
+            }
+        });
     }
 
     function showTerminalPanel() {
         terminalPanel.show();
         terminalPanelVisible = true;
+        toolbarButtonIcon.setEnabled(true);
 
         if (terminalCounter === 0) {
             _createTerminal(true);
@@ -64,6 +77,7 @@ define((require, exports, module) => {
     function hideTerminalPanel() {
         terminalPanel.hide();
         terminalPanelVisible = false;
+        toolbarButtonIcon.setEnabled(false);
         CommandManager.get(common.OPEN_TERMINAL_COMMAND_ID).setChecked(false);
     }
 

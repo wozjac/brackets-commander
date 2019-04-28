@@ -6,6 +6,7 @@ module.exports = function (grunt) {
     };
 
     grunt.initConfig({
+        pkg: "<json:package.json>",
         clean: {
             dist: ["dist"]
         },
@@ -13,7 +14,7 @@ module.exports = function (grunt) {
         zip: {
             dist: {
                 src: ["css/**", "js/**", "nls/**", "node/**", "view/**", "main.js", "strings.js", "package.json"],
-                dest: `${options.distDir}/dist.zip`
+                dest: `${options.distDir}/wozjac.commander.zip`
             }
         },
 
