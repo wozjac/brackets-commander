@@ -1,3 +1,4 @@
 /bower_components/
 /.jsbeautifyrc
 node_modules
+/.brackets.json
