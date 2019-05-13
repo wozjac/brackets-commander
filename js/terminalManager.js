@@ -198,6 +198,7 @@ define((require, exports, module) => {
             $("#bcomm-terminals").children("div").hide();
             $(`#${terminal.getId()}`).show();
             activeTerminalId = terminal.getId();
+            terminal.focus();
         });
     }
 
