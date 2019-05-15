@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/wozjac/brackets-commander.svg?branch=master)](https://travis-ci.com/wozjac/brackets-commander)
+
 Brackets Commander
 ==================
 Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to the chosen CLI (default cmd.exe on Windows platform).
