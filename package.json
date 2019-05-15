@@ -9,7 +9,9 @@
     "engines": {
         "brackets": ">=1.13.0"
     },
-    "i18n": ["en"],
+    "i18n": [
+        "en"
+    ],
     "keywords": [
         "brackets",
         "extension",
@@ -18,17 +20,15 @@
         "shell",
         "cli"
     ],
-    "dependencies": {
-        "xterm": "^3.12.2",
-        "node-pty": "@0.7.8"
-    },
     "devDependencies": {
         "eslint": "^5.16.0",
         "grunt": "^1.0.4",
         "grunt-contrib-clean": "^2.0.0",
         "grunt-contrib-copy": "^1.0.0",
         "grunt-zip": "^0.18.2",
-        "load-grunt-tasks": "^4.0.0"
+        "load-grunt-tasks": "^4.0.0",
+        "xterm": "^3.12.2",
+        "node-pty": "0.7.8"
     },
     "scripts": {
         "test": "eslint js/**/*.js node/execDomain.js *.js"
