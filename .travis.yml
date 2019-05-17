@@ -7,3 +7,11 @@ notifications:
 branches:
   only:
     - dev
+before_script:
+  - npm install grunt-cli -g
+deploy:
+  provider: releases
+  api_key: "06a206fabe10b1b4d1dad03ed2b93518b1b7b84f"
+  file: "dist/wozjac.commander.win.zip"
+  skip_cleanup: true
+  draft: true

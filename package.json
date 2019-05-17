@@ -10,16 +10,16 @@
         "brackets": ">=1.13.0"
     },
     "i18n": [
-        "en"
-    ],
+    "en"
+  ],
     "keywords": [
-        "brackets",
-        "extension",
-        "command",
-        "console",
-        "shell",
-        "cli"
-    ],
+    "brackets",
+    "extension",
+    "command",
+    "console",
+    "shell",
+    "cli"
+  ],
     "devDependencies": {
         "eslint": "^5.16.0",
         "grunt": "^1.0.4",
@@ -27,11 +27,11 @@
         "grunt-contrib-copy": "^1.0.0",
         "grunt-zip": "^0.18.2",
         "load-grunt-tasks": "^4.0.0",
-        "xterm": "^3.12.2",
-        "node-pty": "0.7.8"
+        "node-pty": "0.7.8",
+        "xterm": "^3.12.2"
     },
     "scripts": {
-        "test": "eslint js/**/*.js node/execDomain.js *.js",
+        "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist",
         "preinstall": "npm install windows-build-tools@3.0.1 --production"
     }
 }
