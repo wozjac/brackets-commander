@@ -1,5 +1,7 @@
 Changelog
 ------------
+##### 1.0.0
+- [FIX] Set focus on the terminal after selection on a tab
 ##### 0.3.0
 - add pseudoterminal layer: node-pty for Windows
 - add toolbar icon
