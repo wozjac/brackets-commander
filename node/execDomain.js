@@ -1,6 +1,6 @@
 "use strict";
 
-const PTY = require("node-pty-win"),
+const PTY = require("node-pty"),
     process = require("process"),
     NODE_DOMAIN = "BracketsCommander",
     OUTPUT_DATA_EVENT = "outputData",

@@ -8,7 +8,15 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: "<json:package.json>",
         clean: {
-            dist: ["dist"]
+            dist: ["dist", "node/node_modules"]
+        },
+
+        copy: {
+            dist: {
+                expand: true,
+                src: ["node_modules/nan/**", "node_modules/node-pty/**", "node_modules/xterm/**"],
+                dest: "node"
+            }
         },
 
         zip: {
@@ -16,19 +24,9 @@ module.exports = function (grunt) {
                 src: ["assets/**", "js/**", "nls/**", "node/**", "view/**", "main.js", "strings.js", "package.json"],
                 dest: `${options.distDir}/wozjac.commander.zip`
             }
-        },
-
-        copy: {
-            dist: {
-                files: [{
-                    expand: true,
-                    src: ["css/**"],
-                    dest: options.distDir
-                }]
-            }
         }
     });
 
-    grunt.registerTask("dist", ["clean:dist", "zip"]);
+    grunt.registerTask("dist", ["clean:dist", "copy:dist", "zip"]);
     grunt.registerTask("default", ["dist"]);
 };
