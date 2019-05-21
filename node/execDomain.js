@@ -1,12 +1,17 @@
 "use strict";
 
-const PTY = require("node-pty"),
-    process = require("process"),
+const process = require("process"),
     NODE_DOMAIN = "BracketsCommander",
     OUTPUT_DATA_EVENT = "outputData",
     PTY_NOT_EXIST = 1;
 
-let domainManager;
+let domainManager, PTY;
+
+if (process.env === "win32") {
+    PTY = require("node-pty-win");
+} else {
+    PTY = require("node-pty-linux");
+}
 
 const pseudoTerminals = {},
     defaultShellPath = getDefaultShellPath(),
