@@ -31,7 +31,6 @@
         "xterm": "^3.12.2"
     },
     "scripts": {
-        "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist",
-        "preinstall": "npm install windows-build-tools@3.0.1 --production"
+        "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist"
     }
 }
