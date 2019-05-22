@@ -7,7 +7,7 @@ const process = require("process"),
 
 let domainManager, PTY;
 
-if (process.env === "win32") {
+if (process.platform === "win32") {
     PTY = require("node-pty-win");
 } else {
     PTY = require("node-pty-linux");
