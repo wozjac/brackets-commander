@@ -28,7 +28,8 @@
         "grunt-curl": "^2.5.1",
         "grunt-zip": "^0.18.2",
         "load-grunt-tasks": "^4.0.0",
-        "xterm": "^3.12.2"
+        "xterm": "^3.12.2",
+        "nan": "2.10.0"
     },
     "scripts": {
         "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist"
