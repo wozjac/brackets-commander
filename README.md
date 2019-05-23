@@ -6,26 +6,23 @@ Brackets Commander is an extension for Brackets editor providing a tabbed termin
 
 ![screenshot](https://www.mediafire.com/convkey/d784/bj2bgzzt5okwa9q6g.jpg)
 
-Status
-------
-- testing on Windows platform
-- working on Linux version
-
 Requirements
 ------------
-- Brackets 1.13
-- Windows > 7 
+- Brackets => 1.13
+- Windows x64 (7 or above)
+- Linux x64 (tested on Linux Ubuntu 18.04.2 and Debian 9.7)
 
 Features
 --------
 - supports multiple terminals in tabs
-- configurable CLI (default cmd.exe on Windows) 
+- configurable CLI (default cmd.exe on Windows, bash on Linux) 
 
 Installation
 ------------
 1. Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2. Unzip to a folder "wozjac.commander"
-3. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
+2a. Drag the zip file into Brackets extension manager area OR
+2c. Unzip the file
+2d. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
 C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
 
 Usage
