@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+### Changed:
+- Changed naming of terminal tabs
+
 ## 1.0.1
 ### Added:
 - Windows/Linux node-pty compiled libs, loaded in execDomain
