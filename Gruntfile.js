@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         zip: {
             dist: {
                 src: ["assets/**", "js/**", "nls/**", "node/**", "view/**", "main.js", "strings.js", "package.json"],
-                dest: `${options.distDir}/wozjac.commander.linux.zip`
+                dest: `${options.distDir}/wozjac.commander.osx.zip`
             }
         }
     });
