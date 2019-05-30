@@ -4,10 +4,6 @@ node_js:
 notifications:
   email: false
 branches:
-  except:
-    - dev
-
-branches:
   only:
     - master
 deploy:

@@ -50,7 +50,6 @@ define((require, exports, module) => {
         });
 
         _attachAppendTerminal();
-
         toolbarButtonIcon = toolbarButton.create();
 
         toolbarButtonIcon.addOnClickHandler((isEnabled) => {
@@ -67,7 +66,7 @@ define((require, exports, module) => {
         terminalPanelVisible = true;
         toolbarButtonIcon.setEnabled(true);
 
-        if (terminalCounter === 0) {
+        if (_getTerminalInstancesLength() === 0) {
             _createTerminal(true);
         }
 
@@ -94,16 +93,11 @@ define((require, exports, module) => {
                 _insertTerminalToPanel(terminal, active);
                 _attachCloseTerminal(terminal);
                 _attachSelectTerminal(terminal);
-
                 terminal.open();
 
                 if (terminalPanelVisible === true) {
                     terminal.fit();
                 }
-
-                terminal.on("commandEntered", (event, pid, command) => {
-                    _setTabTitle(pid, command);
-                });
             })
             .fail((error) => {
                 console.error(error);
@@ -117,22 +111,23 @@ define((require, exports, module) => {
         }
     }
 
-    function _setTabTitle(pid, command) {
-        let title = command.trim();
-
-        if (!title || title.length === 0) {
-            return;
-        }
-
-        if (title.length > 9) {
-            title = `${title.substring(0, 7)}...`;
-        }
-
-        const $tabs = $("#bcomm-nav-tabs");
-        const $tab = $tabs.find(`#bcomm-tab-${pid}-title`);
-        $tab.text(title);
-        $tab.prop("title", title);
-    }
+    //TODO: add title event handler
+    //function _setTabTitle(pid, command) {
+    //    let title = command.trim();
+    //
+    //    if (!title || title.length === 0) {
+    //        return;
+    //    }
+    //
+    //    if (title.length > 9) {
+    //        title = `${title.substring(0, 7)}...`;
+    //    }
+    //
+    //    const $tabs = $("#bcomm-nav-tabs");
+    //    const $tab = $tabs.find(`#bcomm-tab-${pid}-title`);
+    //    $tab.text(title);
+    //    $tab.prop("title", title);
+    //}
 
     function _removeTerminal(terminal) {
         terminal.close();
@@ -141,7 +136,7 @@ define((require, exports, module) => {
 
         if (activeTerminalId &&
             terminal.getId() === activeTerminalId &&
-            terminalCounter > 1) {
+            _getTerminalInstancesLength() > 1) {
 
             let $newActiveTab = $tab.prev();
 
@@ -153,7 +148,11 @@ define((require, exports, module) => {
         }
 
         $tab.remove();
-        terminalCounter--;
+        delete terminalInstances[terminal.getId()];
+
+        if (_getTerminalInstancesLength() === 0) {
+            terminalCounter = 0;
+        }
     }
 
     function _insertTerminalToPanel(terminal, active) {
@@ -161,7 +160,7 @@ define((require, exports, module) => {
 
         const $tab = $(Mustache.render(terminalTabHtml, {
             id: tabItemId,
-            title: `Terminal ${terminalCounter}`
+            title: _getTerminalTitle()
         }));
 
         if (active) {
@@ -177,6 +176,7 @@ define((require, exports, module) => {
 
         for (const i in terminalInstances) {
             terminal = terminalInstances[i];
+
             if (terminal !== undefined) {
                 terminal.fit();
             }
@@ -187,7 +187,7 @@ define((require, exports, module) => {
         $("#bcomm-nav-tabs").on("click", `#bcomm-tab-${terminal.getId()} .bcomm-close`, () => {
             _removeTerminal(terminal);
 
-            if (terminalCounter === 0) {
+            if (_getTerminalInstancesLength() === 0) {
                 activeTerminalId = null;
             }
         });
@@ -222,6 +222,14 @@ define((require, exports, module) => {
             shellPath: prefs.get(common.prefs.SHELL_PATH),
             cwd: common.getWorkingDirectory()
         });
+    }
+
+    function _getTerminalTitle() {
+        return `Terminal ${terminalCounter}`;
+    }
+
+    function _getTerminalInstancesLength() {
+        return Object.keys(terminalInstances).length;
     }
 
     exports.showTerminalPanel = showTerminalPanel;
