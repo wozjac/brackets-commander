@@ -7,10 +7,15 @@ const process = require("process"),
 
 let domainManager, PTY;
 
-if (process.platform === "win32") {
-    PTY = require("node-pty-win");
-} else {
-    PTY = require("node-pty-linux");
+switch (process.platform) {
+    case "win32":
+        PTY = require("node-pty-win");
+        break;
+    case "darwin":
+        PTY = require("node-pty-osx");
+        break;
+    default:
+        PTY = require("node-pty-linux");
 }
 
 const pseudoTerminals = {},

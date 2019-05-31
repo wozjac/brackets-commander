@@ -16,7 +16,8 @@ module.exports = function (grunt) {
             "node-pty": {
                 src: [
 					"http://public_repo.vipserv.org/node-pty-linux.zip",
-					"http://public_repo.vipserv.org/node-pty-win.zip"
+					"http://public_repo.vipserv.org/node-pty-win.zip",
+                    "http://public_repo.vipserv.org/node-pty-osx.zip",
 				],
                 dest: "precompiled"
             }
@@ -41,7 +42,7 @@ module.exports = function (grunt) {
 
         unzip: {
             "node-pty": {
-                src: ["precompiled/node-pty-linux.zip", "precompiled/node-pty-win.zip"],
+                src: ["precompiled/node-pty-linux.zip", "precompiled/node-pty-win.zip", "precompiled/node-pty-osx.zip"],
                 dest: "node/node_modules/"
             }
         }
