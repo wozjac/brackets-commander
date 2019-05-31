@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+### Added:
+- OS X support
+
 ## 1.0.2
 ### Changed:
 - Changed naming of terminal tabs
