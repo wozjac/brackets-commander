@@ -10,16 +10,16 @@
         "brackets": ">=1.13.0"
     },
     "i18n": [
-    "en"
-  ],
+        "en"
+    ],
     "keywords": [
-    "brackets",
-    "extension",
-    "command",
-    "console",
-    "shell",
-    "cli"
-  ],
+        "brackets",
+        "extension",
+        "command",
+        "console",
+        "shell",
+        "cli"
+    ],
     "devDependencies": {
         "eslint": "^5.16.0",
         "grunt": "^1.0.4",

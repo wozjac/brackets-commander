@@ -9,8 +9,9 @@ Brackets Commander is an extension for Brackets editor providing a tabbed termin
 Requirements
 ------------
 - Brackets => 1.13
-- Windows x64 (7 or above)
+- Windows (7 or above) x64 
 - Linux x64 (tested on Linux Ubuntu 18.04.2 and Debian 9.7)
+- Mac OS X (tested on Mojave 10.14.5) 
 
 Features
 --------
@@ -20,7 +21,8 @@ Features
 Installation
 ------------
 1. Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2a. Drag the zip file into Brackets extension manager area OR
+2a. Drag the zip file into Brackets extension manager area 
+OR
 2c. Unzip the file
 2d. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
 C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
