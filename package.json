@@ -10,7 +10,11 @@
         "brackets": ">=1.13.0"
     },
     "i18n": [
-        "en"
+        "en",
+        "pl",
+        "de",
+        "fr",
+        "es"
     ],
     "keywords": [
         "brackets",
