@@ -8,32 +8,14 @@
     padding-bottom: 0;
 }
 
-#bcomm-panel .toolbar .btn-container {
-    margin-right: 8px;
-}
-
 #bcomm-panel .toolbar .btn {
     padding-top: 0;
     padding-bottom: 0;
     margin: 0;
 }
 
-/*
-#bcomm-panel .toolbar .btn.first {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: 0;
-}
-*/
-
-#bcomm-panel .toolbar .btn.middle {
-    border-radius: 0;
-    border-right: 0;
-}
-
-#bcomm-panel .toolbar .btn.last {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+#bcomm-panel .nav-container {
+    margin-left: 8px;
 }
 
 #bcomm-panel .toolbar .title {
