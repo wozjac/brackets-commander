@@ -21,10 +21,10 @@ Features
 Installation
 ------------
 1. Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2a. Drag the zip file into Brackets extension manager area 
-OR
-2c. Unzip the file
-2d. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
+2. Drag the zip file into Brackets extension manager area   
+OR  
+3. Unzip the file  
+4. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
 C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
 
 Usage
