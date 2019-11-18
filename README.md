@@ -21,7 +21,8 @@ Features
 Installation
 ------------
 1. Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2. Drag the zip file into Brackets extension manager area   
+2. Drag the zip file into Brackets extension manager area
+3. Ignore error if present, restart Brackets  
 OR  
 3. Unzip the file  
 4. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
