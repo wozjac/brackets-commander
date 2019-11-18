@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+### Fixed
+- Correct resize after minimizing Brackets window 
+
 ## 1.0.3
 ### Added:
 - OS X support

@@ -49,6 +49,8 @@ define((require, exports, module) => {
     }
 
     function handleWindowResize() {
-        terminalManager.fitTerminals();
+        setTimeout(() => {
+            terminalManager.fitTerminals();
+        }, 500);
     }
 });
