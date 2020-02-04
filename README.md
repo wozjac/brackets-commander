@@ -4,7 +4,7 @@ Brackets Commander
 ==================
 Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to the chosen CLI (default cmd.exe on Windows platform).
 
-![screenshot](https://www.mediafire.com/convkey/d784/bj2bgzzt5okwa9q6g.jpg)
+![screenshot](http://public_repo.vipserv.org/images/commander/bg_cmd.png)
 
 Requirements
 ------------
@@ -31,7 +31,7 @@ C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
 Usage
 -----
 - open via menu "View" -> "Show terminal panel"
-- or via the icon in the toolbar ![icon](https://www.mediafire.com/convkey/988f/w3z9rkpyt60355v6g.jpg)
+- or via the icon in the toolbar ![icon](http://public_repo.vipserv.org/images/commander/icon.png)
 - or via your key binding -> see *Configuration*
 
 Configuration
