@@ -128,9 +128,13 @@ function createPseudoterminal(options, callback) {
 
     const pty = PTY.spawn(options.shellPath, shellArgs, {
         name: "xterm-color",
+        cols: 120,
+        rows: 8,
         env: process.env,
         cwd: options.cwd
     });
+
+    pty.resize(120, 8);
 
     pseudoTerminals[pty.pid] = pty;
 
