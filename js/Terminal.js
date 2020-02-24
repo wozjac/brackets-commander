@@ -16,7 +16,7 @@ define((require, exports, module) => {
     class Terminal {
         constructor(pid) {
             this._id = pid;
-            this._commandString = "";
+            //this._commandString = "";
 
             this._terminalHtml = Mustache.render(terminalInstanceHtml, {
                 "TERMINAL_ID": this._id
@@ -85,19 +85,19 @@ define((require, exports, module) => {
                     });
             });
 
-            this._xterminal.on("keydown", (event) => {
-                switch (event.keyCode) {
-                    case 13:
-                        this.trigger("commandEntered", this._id, this._commandString);
-                        this._commandString = "";
-                        break;
-                    case 8:
-                        if (this._commandString.length >= 1) {
-                            this._commandString = this._commandString.slice(0, -1);
-                        }
-                        break;
-                }
-            });
+            //            this._xterminal.on("keydown", (event) => {
+            //                switch (event.keyCode) {
+            //                    case 13:
+            //                        this.trigger("commandEntered", this._id, this._commandString);
+            //                        this._commandString = "";
+            //                        break;
+            //                    case 8:
+            //                        if (this._commandString.length >= 1) {
+            //                            this._commandString = this._commandString.slice(0, -1);
+            //                        }
+            //                        break;
+            //                }
+            //            });
         }
 
         close() {
