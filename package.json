@@ -3,7 +3,7 @@
     "title": "Brackets Commander",
     "description": "Brackets editor extension: tabbed terminal panel connected to chosen CLI",
     "homepage": "https://github.com/wozjac/brackets-commander",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk)",
     "license": "MIT",
     "engines": {
@@ -32,8 +32,8 @@
         "grunt-curl": "^2.5.1",
         "grunt-zip": "^0.18.2",
         "load-grunt-tasks": "^4.0.0",
-        "xterm": "^3.12.2",
-        "nan": "2.10.0"
+        "nan": "^2.14.0",
+        "xterm": "^4.4.0"
     },
     "scripts": {
         "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist"
