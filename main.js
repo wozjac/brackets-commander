@@ -19,8 +19,8 @@ define((require, exports, module) => {
         common = require("js/common");
 
     ExtensionUtils.loadStyleSheet(module, "assets/style.css");
-    ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/xterm.css");
-    ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
+    ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/css/xterm.css");
+    //ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
 
     CommandManager.register("Show terminal panel", common.OPEN_TERMINAL_COMMAND_ID, handleOpenTerminalCommand);
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, handleWindowResize);
@@ -50,7 +50,7 @@ define((require, exports, module) => {
 
     function handleWindowResize() {
         setTimeout(() => {
-            terminalManager.fitTerminals();
+            terminalManager.fitActiveTerminal();
         }, 500);
     }
 });
