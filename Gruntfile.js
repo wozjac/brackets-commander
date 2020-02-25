@@ -27,7 +27,12 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    src: ["node_modules/nan/**", "node_modules/xterm/**"],
+                    src: [
+                        "node_modules/nan/**",
+                        "node_modules/xterm/lib/**",
+                        "node_modules/xterm/css/**",
+                        "node_modules/xterm-addon-fit/lib/**"
+                    ],
                     dest: "node"
                 }]
             }

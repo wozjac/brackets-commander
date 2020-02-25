@@ -3,26 +3,24 @@ define((require, exports, module) => {
 
     const Mustache = brackets.getModule("thirdparty/mustache/mustache"),
         EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-        XTerm = require("../node/node_modules/xterm/dist/xterm"),
+        XTerm = require("../node/node_modules/xterm/lib/xterm"),
         NodeDomain = brackets.getModule("utils/NodeDomain"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         terminalInstanceHtml = require("text!../view/terminal-instance.html"),
-        fit = require("../node/node_modules/xterm/dist/addons/fit/fit"),
+        fit = require("../node/node_modules/xterm-addon-fit/lib/xterm-addon-fit"),
         strings = require("strings"),
         execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
-
-    XTerm.applyAddon(fit);
 
     class Terminal {
         constructor(pid) {
             this._id = pid;
-            //this._commandString = "";
 
             this._terminalHtml = Mustache.render(terminalInstanceHtml, {
                 "TERMINAL_ID": this._id
             });
 
             this._xterminal = null;
+            this._fitAddon = new fit.FitAddon();
         }
 
         getId() {
@@ -35,8 +33,9 @@ define((require, exports, module) => {
 
         fit() {
             if (this._xterminal) {
-                this._xterminal.fit();
+                this._fitAddon.fit();
                 this._xterminal.refresh(0, this._xterminal.rows - 1);
+                this._xterminal.scrollToBottom();
 
                 execDomain.exec("resizePseudoterminal", this._id, this._xterminal.cols, this._xterminal.rows)
                     .fail((error) => {
@@ -66,38 +65,22 @@ define((require, exports, module) => {
         open() {
             const terminalContainer = document.getElementById(this.getId());
 
-            this._xterminal = new XTerm({
+            this._xterminal = new XTerm.Terminal({
                 cursorBlink: true,
-                fontSize: 12
+                fontSize: 12,
+                cols: 120
             });
 
+            this._xterminal.loadAddon(this._fitAddon);
             this._xterminal.open(terminalContainer);
             this._xterminal.focus();
 
-            this._xterminal.on("data", (data) => {
-                if (data && data.charCodeAt(0) !== 127) { //skip delete
-                    this._commandString += data;
-                }
-
+            this._xterminal.onData((data) => {
                 execDomain.exec("writeToPseudoterminal", this._id, data)
                     .fail((error) => {
                         this._handleExecDomainError(error, this._id);
                     });
             });
-
-            //            this._xterminal.on("keydown", (event) => {
-            //                switch (event.keyCode) {
-            //                    case 13:
-            //                        this.trigger("commandEntered", this._id, this._commandString);
-            //                        this._commandString = "";
-            //                        break;
-            //                    case 8:
-            //                        if (this._commandString.length >= 1) {
-            //                            this._commandString = this._commandString.slice(0, -1);
-            //                        }
-            //                        break;
-            //                }
-            //            });
         }
 
         close() {
@@ -106,7 +89,7 @@ define((require, exports, module) => {
                     this._handleExecDomainError(error, this._id);
                 });
 
-            this._xterminal.destroy();
+            this._xterminal.dispose();
         }
 
         _handleExecDomainError(error, terminalId) {

@@ -46,7 +46,7 @@ define((require, exports, module) => {
         });
 
         $("#bcomm-panel").on("panelResizeEnd", () => {
-            fitTerminals();
+            fitActiveTerminal();
         });
 
         _attachAppendTerminal();
@@ -70,7 +70,7 @@ define((require, exports, module) => {
             _createTerminal(true);
         }
 
-        fitTerminals();
+        fitActiveTerminal();
     }
 
     function hideTerminalPanel() {
@@ -171,15 +171,11 @@ define((require, exports, module) => {
         $("#bcomm-terminals").append(terminal.getHtml());
     }
 
-    function fitTerminals() {
-        let terminal;
+    function fitActiveTerminal() {
+        const terminal = terminalInstances[activeTerminalId];
 
-        for (const i in terminalInstances) {
-            terminal = terminalInstances[i];
-
-            if (terminal !== undefined) {
-                terminal.fit();
-            }
+        if (terminal) {
+            terminal.fit();
         }
     }
 
@@ -199,6 +195,7 @@ define((require, exports, module) => {
             $(`#${terminal.getId()}`).show();
             activeTerminalId = terminal.getId();
             terminal.focus();
+            fitActiveTerminal();
         });
     }
 
@@ -235,5 +232,5 @@ define((require, exports, module) => {
     exports.showTerminalPanel = showTerminalPanel;
     exports.hideTerminalPanel = hideTerminalPanel;
     exports.getTerminalInstance = getTerminalInstance;
-    exports.fitTerminals = fitTerminals;
+    exports.fitActiveTerminal = fitActiveTerminal;
 });
