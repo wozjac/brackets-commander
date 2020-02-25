@@ -14,13 +14,12 @@ define((require, exports, module) => {
         Menus = brackets.getModule("command/Menus"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
         AppInit = brackets.getModule("utils/AppInit"),
-        terminalManager = require("js/terminalManager"),
-        preferences = require("js/preferences"),
-        common = require("js/common");
+        terminalManager = require("src/terminalManager"),
+        preferences = require("src/preferences"),
+        common = require("src/common");
 
     ExtensionUtils.loadStyleSheet(module, "assets/style.css");
     ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/css/xterm.css");
-    //ExtensionUtils.loadStyleSheet(module, "node/node_modules/xterm/dist/addons/fullscreen/fullscreen.css");
 
     CommandManager.register("Show terminal panel", common.OPEN_TERMINAL_COMMAND_ID, handleOpenTerminalCommand);
     WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, handleWindowResize);

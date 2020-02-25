@@ -2,7 +2,7 @@ define((require, exports) => {
     "use strict";
 
     const PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
-        common = require("js/common"),
+        common = require("src/common"),
         prefs = PreferencesManager.getExtensionPrefs(common.prefs.PREFS_PREFIX);
 
     function initPreferences() {

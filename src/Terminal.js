@@ -6,10 +6,11 @@ define((require, exports, module) => {
         XTerm = require("../node/node_modules/xterm/lib/xterm"),
         NodeDomain = brackets.getModule("utils/NodeDomain"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        terminalInstanceHtml = require("text!../view/terminal-instance.html"),
         fit = require("../node/node_modules/xterm-addon-fit/lib/xterm-addon-fit"),
         strings = require("strings"),
         execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
+
+    const terminalInstanceHtml = _readTerminalHtml();
 
     class Terminal {
         constructor(pid) {
@@ -105,6 +106,25 @@ define((require, exports, module) => {
             console.error(message);
             console.trace();
         }
+    }
+
+    function _readTerminalHtml() {
+        let result = "";
+        const path = `${ExtensionUtils.getModulePath(module)}view/terminal-instance.html`;
+
+        jQuery.ajax({
+            url: path,
+            dataType: "text",
+            async: false,
+            success: (text) => {
+                result = text;
+            },
+            error: (error) => {
+                throw error;
+            }
+        });
+
+        return result;
     }
 
     EventDispatcher.makeEventDispatcher(Terminal.prototype);

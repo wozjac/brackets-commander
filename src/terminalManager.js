@@ -6,15 +6,16 @@ define((require, exports, module) => {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         NodeDomain = brackets.getModule("utils/NodeDomain"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache"),
-        Terminal = require("js/Terminal"),
-        common = require("js/common"),
-        toolbarButton = require("js/toolbarButton"),
-        prefs = require("js/preferences"),
+        Terminal = require("src/Terminal"),
+        common = require("src/common"),
+        toolbarButton = require("src/toolbarButton"),
+        prefs = require("src/preferences"),
         strings = require("strings"),
-        terminalTabHtml = require("text!../view/terminal-tab.html"),
         execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
 
     execDomain.on("outputData", _handleOutputDataFromPseudoterminal);
+
+    const terminalTabHtml = _readHtmlTemplateFile("terminal-tab.html");
 
     const terminalInstances = {};
 
@@ -27,7 +28,7 @@ define((require, exports, module) => {
     initTerminalPanel();
 
     function initTerminalPanel() {
-        const panelHtml = require("text!../view/terminal-panel.html");
+        const panelHtml = _readHtmlTemplateFile("terminal-panel.html");
         terminalPanel = WorkspaceManager.createBottomPanel("brackets-commander.terminal-panel", $(panelHtml), 130);
 
         $("#bcomm-panel .close").click(() => {
@@ -227,6 +228,25 @@ define((require, exports, module) => {
 
     function _getTerminalInstancesLength() {
         return Object.keys(terminalInstances).length;
+    }
+
+    function _readHtmlTemplateFile(filename) {
+        let result = "";
+        const path = `${ExtensionUtils.getModulePath(module)}view/${filename}`;
+
+        jQuery.ajax({
+            url: path,
+            dataType: "text",
+            async: false,
+            success: (text) => {
+                result = text;
+            },
+            error: (error) => {
+                throw error;
+            }
+        });
+
+        return result;
     }
 
     exports.showTerminalPanel = showTerminalPanel;

@@ -37,6 +37,6 @@
         "xterm-addon-fit": "^0.3.0"
     },
     "scripts": {
-        "test": "eslint js/**/*.js node/execDomain.js *.js && grunt dist"
+        "test": "eslint src/**/*.js node/execDomain.js *.js && grunt dist"
     }
 }
