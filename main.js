@@ -1,11 +1,3 @@
-require.config({
-    paths: {
-        "text": "lib/text",
-        "i18n": "lib/i18n"
-    },
-    locale: brackets.getLocale()
-});
-
 define((require, exports, module) => {
     "use strict";
 
