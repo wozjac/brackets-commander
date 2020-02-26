@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.5
+### Fixed:
+- remove installation errors due to require.js missing "text" and "i18n" modules
+- fixed incorrect terminal size on Windows
+
+### Added:
+- update Xterm.js to 4.4 version
+
 ## 1.0.4
 ### Fixed
 - Correct resize after minimizing Brackets window 

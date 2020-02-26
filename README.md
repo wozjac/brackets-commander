@@ -2,13 +2,13 @@
 
 Brackets Commander
 ==================
-Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to the chosen CLI (default cmd.exe on Windows platform).
+Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to a chosen CLI (default cmd.exe on Windows platform).
 
 ![screenshot](https://www.mediafire.com/convkey/d784/bj2bgzzt5okwa9q6g.jpg)
 
 Requirements
 ------------
-- Brackets => 1.13
+- Brackets => 1.14
 - Windows (7 or above) x64 
 - Linux x64 (tested on Linux Ubuntu 18.04.2 and Debian 9.7)
 - Mac OS X (tested on Mojave 10.14.5) 
@@ -20,13 +20,16 @@ Features
 
 Installation
 ------------
-1. Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
-2. Drag the zip file into Brackets extension manager area
-3. Ignore error if present, restart Brackets  
+- Download "wozjac.commander.zip" file from [Releases](https://github.com/wozjac/brackets-commander/releases)
+- Drag the zip file into Extension Manager's installation area  
 OR  
-3. Unzip the file  
-4. Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
-C:\Users\Myname\AppData\Roaming\Brackets\extensions\user
+- Unzip the file  
+- Paste into the "user" extensions folder (in Brackets menu "Help" -> "Show extensions folder"), for example path on Windows: 
+C:\Users\Myname\AppData\Roaming\Brackets\extensions\user  
+OR
+- Paste the link to "wozjac.commander.zip" file from https://github.com/wozjac/brackets-commander/releases into Extension Manager's installation area
+
+In case of error about the extension initialization just restart Brackets.  
 
 Usage
 -----
