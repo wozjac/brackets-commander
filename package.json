@@ -9,13 +9,6 @@
     "engines": {
         "brackets": ">=1.13.0"
     },
-    "i18n": [
-        "en",
-        "pl",
-        "de",
-        "fr",
-        "es"
-    ],
     "keywords": [
         "brackets",
         "extension",
