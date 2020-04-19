@@ -173,6 +173,10 @@ define((require, exports, module) => {
     }
 
     function fitActiveTerminal() {
+        if (!terminalPanelVisible) {
+            return;
+        }
+
         const terminal = terminalInstances[activeTerminalId];
 
         if (terminal) {
