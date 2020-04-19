@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6
+### Fixed
+- correct fitting active terminal fired by Brackets editor event
+
 ## 1.0.5
 ### Fixed:
 - remove installation errors due to require.js missing "text" and "i18n" modules
