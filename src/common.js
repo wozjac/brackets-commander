@@ -5,7 +5,8 @@ define((require, exports) => {
 
     const preferences = {
         PREFS_PREFIX: "bracketsCommander",
-        SHELL_PATH: "shellPath"
+        SHELL_PATH: "shellPath",
+        BACKGROUND_COLOR: "backgroundColor"
     };
 
     function generateId() {

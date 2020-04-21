@@ -7,6 +7,7 @@ define((require, exports) => {
 
     function initPreferences() {
         prefs.definePreference(common.prefs.SHELL_PATH, "string", "");
+        prefs.definePreference(common.prefs.BACKGROUND_COLOR, "string", "#000000");
     }
 
     function get(key) {
