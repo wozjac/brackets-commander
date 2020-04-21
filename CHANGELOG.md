@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7
+### Added
+- add "backgroundColor" option to set terminal background color
+
 ## 1.0.6
 ### Fixed
 - correct fitting active terminal fired by Brackets editor event
