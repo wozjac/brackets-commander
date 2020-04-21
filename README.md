@@ -41,15 +41,23 @@ Configuration
 -------------
 
 #### 1. CLI
-To change the CLI create a [preference](https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences) option *bracketsCommander.shellPath* and put the path to your CLI.
+To change the CLI put a [preference](https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences) option *bracketsCommander.shellPath* and put the path to your CLI.
 For example, to change the CLI in the current project to Powershell create a .brackets.json file and put:  
 ```javascript
 {  
     "bracketsCommander.shellPath": "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"  
 }
 ```
+#### 2. Terminal background color
+To change the CLI put *bracketsCommander.backgroundColor* option and put the color as hex value, prefixed with #.
+Example:  
+```javascript
+{  
+    "bracketsCommander.backgroundColor": "#012456"  
+}
+```
 
-#### 2. Key binding
+#### 3. Key binding
 By default none key shortcut is assigned for opening the terminal panel. You can set your own: menu "Debug" -> "Open User Key Map", put your [key binding](https://github.com/adobe/brackets/wiki/User-Key-Bindings).
 ```javascript
 {
