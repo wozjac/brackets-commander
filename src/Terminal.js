@@ -8,6 +8,8 @@ define((require, exports, module) => {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         fit = require("../node/node_modules/xterm-addon-fit/lib/xterm-addon-fit"),
         strings = require("strings"),
+        preferences = require("src/preferences"),
+        common = require("src/common"),
         execDomain = new NodeDomain("BracketsCommander", ExtensionUtils.getModulePath(module, "../node/execDomain"));
 
     const terminalInstanceHtml = _readTerminalHtml();
@@ -70,6 +72,10 @@ define((require, exports, module) => {
                 cursorBlink: true,
                 fontSize: 12,
                 cols: 120
+            });
+
+            this._xterminal.setOption("theme", {
+                background: preferences.get(common.prefs.BACKGROUND_COLOR)
             });
 
             this._xterminal.loadAddon(this._fitAddon);
