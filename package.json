@@ -3,7 +3,7 @@
     "title": "Brackets Commander",
     "description": "Brackets editor extension: tabbed terminal panel connected to chosen CLI",
     "homepage": "https://github.com/wozjac/brackets-commander",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "author": "Jacek Woźniczak <wozjac@zoho.com> (https://www.linkedin.com/in/jacek-wznk)",
     "license": "MIT",
     "engines": {
