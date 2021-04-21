@@ -2,7 +2,7 @@
 
 Brackets Commander
 ==================
-Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to a chosen CLI (default cmd.exe on Windows platform).
+Brackets Commander is an extension for Brackets editor providing a tabbed terminal panel, connected to a chosen shell (default cmd.exe on Windows platform).
 
 ![screenshot](http://public_repo.vipserv.org/images/commander/bg_cmd.png)
 
@@ -41,7 +41,7 @@ Configuration
 -------------
 
 #### 1. CLI
-To change the CLI put a [preference](https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences) option *bracketsCommander.shellPath* and put the path to your CLI.
+To change the shell put a [preference](https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences) option *bracketsCommander.shellPath* and put the path to your CLI.
 For example, to change the CLI in the current project to Powershell create a .brackets.json file and put:  
 ```javascript
 {  
@@ -49,7 +49,7 @@ For example, to change the CLI in the current project to Powershell create a .br
 }
 ```
 #### 2. Terminal background color
-To change the CLI put *bracketsCommander.backgroundColor* option and put the color as hex value, prefixed with #.
+To change the shell put *bracketsCommander.backgroundColor* option and put the color as hex value, prefixed with #.
 Example:  
 ```javascript
 {  
